@@ -2,6 +2,12 @@ import React from 'react';
 import { Dialog, Form, Input, Button } from '@alifd/next';
 import { IPublicModelPluginContext, IPublicModelResource } from '@alilc/lowcode-types';
 
+/** 新增页面表单的提交值（@alifd/next 的 Form.Submit onClick 形参类型是 unknown） */
+interface AddPageFormValues {
+  title: string;
+  slug: string;
+}
+
 class Controller {
   pluginContext?: IPublicModelPluginContext;
 
@@ -33,7 +39,9 @@ class Controller {
             <Form.Submit
               type="primary"
               validate
-              onClick={(values, errors) => {
+              onClick={(rawValues, errors) => {
+                // Form.Submit 的 value 形参是 unknown，这里按表单字段收窄
+                const values = rawValues as AddPageFormValues;
                 const list = this.pluginContext?.workspace.resourceList.map(d => d.options);
                 list?.push({
                   slug: values.slug,
@@ -42,7 +50,9 @@ class Controller {
                 });
                 this.pluginContext?.plugins.pluginResourceData.update(list);
                 const resource = this.pluginContext?.workspace.resourceList.filter(d => d.id === values.slug)?.[0];
-                this.pluginContext?.workspace.openEditorWindow(resource);
+                if (resource) {
+                  this.pluginContext?.workspace.openEditorWindow(resource);
+                }
                 dialog.hide();
               }}
               style={{ marginRight: 8 }}

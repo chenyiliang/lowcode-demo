@@ -4,6 +4,10 @@ dist
 package-lock.json
 yarn.lock
 
+# 画布模拟器运行时产物：由 prebuild/predev 生成到各 demo 的 public/（见 vite.config.simulator.ts）
+demo-*/public/react-simulator-renderer.js
+demo-*/public/react-simulator-renderer.css
+
 # IDE
 .vscode
 .idea
@@ -94,3 +98,17 @@ typings/
 
 # mac config files
 .DS_Store
+
+# 本地化物料产物：由 scripts/localize-materials.mjs 从 workspace 物料包拷贝生成
+demo-*/public/materials/
+# 出码 worker：由 scripts/copy-codegen-worker.mjs 从 @alilc/lowcode-code-generator 拷贝生成
+demo-*/public/standalone-worker.min.js
+# playwright-cli 交互验证的产物（console/快照/截图）
+.playwright-cli/
+demo-*/.playwright-cli/
+# 交互探测与 preview 服务的临时文件
+*.out
+.preview-pid
+.pv-pid
+.preview.log
+.pv.log

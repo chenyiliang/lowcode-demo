@@ -21,7 +21,11 @@ export const saveSchema = async (scenarioName: string = 'unknown', id: string, c
   Message.success('成功保存到本地');
 };
 
-export const resetSchema = async (scenarioName: string = 'unknown') => {
+export const resetSchema = async (
+  scenarioName: string = 'unknown',
+  id: string,
+  ctx: IPublicModelPluginContext,
+) => {
   try {
     await new Promise<void>((resolve, reject) => {
       Dialog.confirm({
@@ -42,12 +46,12 @@ export const resetSchema = async (scenarioName: string = 'unknown') => {
   project.importSchema(defaultSchema as any);
   project.simulatorHost?.rerender();
 
-  setProjectSchemaToLocalStorage(scenarioName);
-  await setPackagesToLocalStorage(scenarioName);
+  setProjectSchemaToLocalStorage(scenarioName, id, ctx);
+  await setPackagesToLocalStorage(scenarioName, id, ctx);
   Message.success('成功重置页面');
 }
 
-const getLSName = (scenarioName: string, id: string, ns: string = 'projectSchema') => `${scenarioName}:${id}:${ns}`;
+const getLSName = (scenarioName: string, id?: string, ns: string = 'projectSchema') => `${scenarioName}:${id}:${ns}`;
 
 const getResourceName = (scenarioName: string, ns: string = 'resourceList') => `${scenarioName}:${ns}`;
 
@@ -71,7 +75,7 @@ export const getResourceListFromLocalStorage = async (scenarioName: string) => {
   return JSON.parse(window.localStorage.getItem(getResourceName(scenarioName)) || '[{"title":"首页","slug":"index","id": "index"}]');
 }
 
-export const getProjectSchemaFromLocalStorage = (scenarioName: string, id: string) => {
+export const getProjectSchemaFromLocalStorage = (scenarioName: string, id?: string) => {
   if (!scenarioName) {
     console.error('scenarioName is required!');
     return;
@@ -99,7 +103,12 @@ const setPackagesToLocalStorage = async (scenarioName: string, id: string, ctx: 
     console.error('scenarioName is required!');
     return;
   }
-  const packages = await filterPackages(ctx.material.getAssets().packages);
+  // ctx.material.getAssets() 可能为 undefined（引擎尚未 setAssets 时），需要兜底空数组；
+  // filterPackages 运行时只读 item.package，其入参类型比 IPublicTypePackage[] 窄，
+  // 这里按上游函数自己的入参类型传入，避免手写 any。
+  const packages = await filterPackages(
+    (ctx.material.getAssets()?.packages ?? []) as Parameters<typeof filterPackages>[0],
+  );
   window.localStorage.setItem(
     getLSName(scenarioName, id, 'packages'),
     JSON.stringify(packages),
@@ -119,7 +128,7 @@ export const getProjectSchema = async (scenarioName: string = 'unknown') : Promi
   return generateProjectSchema(pageSchema, DefaultI18nSchema);
 };
 
-export const getPageSchema = async (scenarioName: string = 'unknown', id: string) => {
+export const getPageSchema = async (scenarioName: string = 'unknown', id?: string) => {
   const pageSchema = getProjectSchemaFromLocalStorage(scenarioName, id)?.componentsTree?.[0];
   if (pageSchema) {
     return pageSchema;

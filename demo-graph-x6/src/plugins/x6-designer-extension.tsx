@@ -2,7 +2,25 @@ import { IPublicModelPluginContext } from '@alilc/lowcode-types';
 import { IDesigner } from '@alilc/lce-graph-x6-designer';
 import * as React from 'react';
 import { Markup } from '@antv/x6';
-import ReactDOM from 'react-dom';
+import { createRoot, type Root } from 'react-dom/client';
+
+/**
+ * React 19 移除了 ReactDOM.render，必须改用 createRoot。
+ * 同一个 edge label 容器可能被多次回调（重绘、缩放），
+ * 对它重复 createRoot 会触发 React 19 告警并泄漏旧 root，
+ * 所以按容器缓存 root。WeakMap 让 label 容器被回收时 root 一起释放
+ * （x6 没有提供 onEdgeLabelUnrender 钩子，无法显式 unmount）。
+ */
+const labelRoots = new WeakMap<Element, Root>();
+
+function renderIntoLabel(container: Element, element: React.ReactElement): void {
+  let labelRoot = labelRoots.get(container);
+  if (!labelRoot) {
+    labelRoot = createRoot(container);
+    labelRoots.set(container, labelRoot);
+  }
+  labelRoot.render(element);
+}
 
 /**
  * X6 Designer 业务自定义扩展插件
@@ -48,7 +66,7 @@ function pluginX6DesignerExtension(ctx: IPublicModelPluginContext) {
         const { selectors } = args
         const content = selectors.foContent as HTMLDivElement
         if (content) {
-          ReactDOM.render(<div>自定义 react 标签</div>, content)
+          renderIntoLabel(content, <div>自定义 react 标签</div>)
         }
       })
     }

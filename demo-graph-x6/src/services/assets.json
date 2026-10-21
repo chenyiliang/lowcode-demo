@@ -5,17 +5,14 @@
       "version": "1.0.7",
       "library": "AlilcLceX6Items",
       "urls": [
-        "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/render/default/view.js",
-        "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/render/default/view.css"
+        "/materials/graph-x6-materials/view.js"
       ],
       "editUrls": [
-        "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/view.js",
-        "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/view.css"
+        "/materials/graph-x6-materials/view.js"
       ],
       "advancedUrls": {
         "default": [
-          "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/render/default/view.js",
-          "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/render/default/view.css"
+          "/materials/graph-x6-materials/view.js"
         ]
       },
       "advancedEditUrls": {}
@@ -28,13 +25,13 @@
         "package": "@alilc/lce-x6-items",
         "version": "1.0.7"
       },
-      "url": "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/meta.js",
+      "url": "/materials/graph-x6-materials/meta.js",
       "urls": {
-        "default": "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/meta.js"
+        "default": "/materials/graph-x6-materials/meta.js"
       },
       "advancedUrls": {
         "default": [
-          "https://uipaas-assets.com/prod/npm/@alilc/lce-x6-items/1.0.7/build/lowcode/meta.js"
+          "/materials/graph-x6-materials/meta.js"
         ]
       }
     }

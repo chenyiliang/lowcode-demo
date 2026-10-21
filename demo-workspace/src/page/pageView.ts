@@ -79,7 +79,7 @@ export const pageView = (ctx: IPublicModelPluginContext,  options: {
         ]
       });
 
-      await plugins.register(ResetPlugin)
+      await plugins.register(ResetPlugin, options)
 
       await plugins.register(CodeEditorPlugin);
 

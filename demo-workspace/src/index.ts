@@ -1,3 +1,10 @@
+// 宿主页面全局：iframe 需要的 window.React/ReactDOM/PropTypes/Next/moment/_ 、
+// 引擎与主题样式。老配置里这些来自 index.ejs 的 CDN <script> + build.json externals。
+import './simulator-env';
+// 必须在引擎初始化前把 window.AliLowCodeEngine 挂上：画布 iframe 里的物料读 window.parent.AliLowCodeEngine
+import './expose-engine-globals';
+import './styles';
+import { printBanner } from './banner';
 import { init, workspace } from '@alilc/lowcode-engine';
 import { createFetchHandler } from '@alilc/lowcode-datasource-fetch-handler'
 import ZhEnPlugin from '@alilc/lowcode-plugin-zh-en';
@@ -22,10 +29,12 @@ import SimulatorLocalePlugin from './plugins/plugin-simulator-locale';
 import DefaultSettersDialogRegistryPlugin from './plugins/plugin-default-setters-dialog-registry'
 
 import appHelper from './appHelper';
-import './global.scss';
+
 import { IPublicModelPluginContext, IPublicModelResource, IPublicModelWindow, IPublicTypeContextMenuAction } from '@alilc/lowcode-types';
 
 (async function main() {
+  printBanner();
+
   // 注册应用级资源类型
   workspace.registerResourceType(pageResourceType);
 
@@ -128,6 +137,9 @@ import { IPublicModelPluginContext, IPublicModelResource, IPublicModelWindow, IP
   });
 
   init(document.getElementById('lce-container')!, {
+    // 画布模拟器运行时由本仓库自己打包（见 vite.config.simulator.ts，产物在 public/）。
+    // 老配置这里要么不写（靠 engine-core.js 同目录推导），要么指向 alifd CDN 上的远程 npm 包。
+    simulatorUrl: ['/react-simulator-renderer.css', '/react-simulator-renderer.js'],
     locale: 'zh-CN',
     enableWorkspaceMode: true,
     enableAutoOpenFirstWindow: false,

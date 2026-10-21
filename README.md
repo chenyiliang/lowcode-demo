@@ -4,23 +4,29 @@ demo 是一个组合内核、setter、插件、物料的示范工程，因为未
 ## 如何使用
 目前包含多个独立 demo 工程目录，每个 demo 目录都是一个独立的工程，代表一个特定的 demo 场景，可以选择其一单独使用。
 
-[推荐]使用yarn
+本仓库使用 pnpm workspace 管理，React 19 + Vite 构建，lowcode 相关依赖通过本地 `workspace:*` 链接。
+
 ```bash
-git clone git@github.com:alibaba/lowcode-demo.git
-cd lowcode-demo
+# 在仓库根目录安装（会一并链接本地 workspace 包）
+pnpm install
+
+# 开发某个 demo（dev server 默认 5556 端口）
 cd demo-general
-yarn
-yarn run start
+pnpm run dev
+
+# 构建某个 demo（产物在 demo-general/dist）
+pnpm run build
 ```
 
-使用npm
-```bash
-git clone git@github.com:alibaba/lowcode-demo.git
-cd lowcode-demo
-cd demo-general
-npm install
-npm run start
-```
+常用脚本（在每个 demo 目录内）：
+
+- `pnpm run dev`：启动 Vite dev server（会先执行 `predev` 生成画布模拟器 IIFE 产物）
+- `pnpm run build`：构建到 `dist/`（会先执行 `prebuild`）
+- `pnpm run preview`：本地预览构建产物
+- `pnpm run typecheck`：`tsc --noEmit` 类型检查
+- `pnpm run clean`：清理 `dist/` 与模拟器产物
+
+在仓库根目录也可对所有 demo 批量操作，例如 `pnpm run build` / `pnpm run typecheck`。
 
 场景列表：
 

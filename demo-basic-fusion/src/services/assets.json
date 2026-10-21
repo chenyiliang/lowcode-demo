@@ -4,12 +4,16 @@
     {
       "package": "moment",
       "version": "2.24.0",
-      "urls": ["https://g.alicdn.com/mylib/moment/2.24.0/min/moment.min.js"],
+      "urls": [
+        "https://g.alicdn.com/mylib/moment/2.24.0/min/moment.min.js"
+      ],
       "library": "moment"
     },
     {
       "package": "lodash",
-      "urls": ["https://g.alicdn.com/platform/c/lodash/4.6.1/lodash.min.js"],
+      "urls": [
+        "https://g.alicdn.com/platform/c/lodash/4.6.1/lodash.min.js"
+      ],
       "library": "lodash"
     },
     {
@@ -31,253 +35,9 @@
         "https://g.alicdn.com/fusion-platform/pro-table/1.0.1/next-table.css"
       ],
       "library": "NextTable"
-    },
-    {
-      "title": "AliLowCodeComponents",
-      "package": "@alifd/ali-lowcode-components",
-      "version": "latest",
-      "urls": [
-        "https://gw.alipayobjects.com/os/lib/alifd/ali-lowcode-components/0.1.4/dist/ali-lowcode-components.js",
-        "https://gw.alipayobjects.com/os/lib/alifd/ali-lowcode-components/0.1.4/dist/ali-lowcode-components.css"
-      ],
-      "library": "AliLowCodeComponents"
-    },
-    {
-      "title": "BizCharts",
-      "package": "bizcharts",
-      "version": "4.1.11",
-      "urls": ["https://g.alicdn.com/code/lib/bizcharts/4.1.11/BizCharts.min.js"],
-      "library": "BizCharts"
     }
   ],
   "components": [
-    {
-      "componentName": "Link",
-      "title": "链接",
-      "npm": {
-        "package": "@alifd/ali-lowcode-components",
-        "version": "latest",
-        "exportName": "Link",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "props": [
-        {
-          "name": "href",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "超链接",
-              "en-US": "Link"
-            },
-            "tip": {
-              "type": "i18n",
-              "zh-CN": "属性：href | 说明：超链接地址",
-              "en-US": "prop: href | description: link address"
-            }
-          },
-          "propType": "string",
-          "defaultValue": "https://fusion.design"
-        },
-        {
-          "name": "children",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "链接文案",
-              "en-US": "Text"
-            },
-            "tip": {
-              "type": "i18n",
-              "zh-CN": "属性：children | 说明：超链接文案",
-              "en-US": "prop: children | description: text of the link"
-            }
-          },
-          "propType": {
-            "type": "oneOfType",
-            "value": ["string", "node"]
-          },
-          "defaultValue": "这是一个超链接"
-        },
-        {
-          "name": "style",
-          "propType": "object"
-        },
-        {
-          "name": "target",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "页面目标",
-              "en-US": "Target"
-            },
-            "tip": {
-              "type": "i18n",
-              "zh-CN": "属性：target | 说明：跳转页面目标",
-              "en-US": "prop: target | description: target of new page"
-            }
-          },
-          "propType": {
-            "type": "oneOf",
-            "value": ["_blank", "_self"]
-          }
-        }
-      ],
-      "configure": {
-        "supports": {
-          "style": true,
-          "events": ["onClick"]
-        },
-        "component": {
-          "isContainer": true
-        },
-        "props": [
-          {
-            "name": "children",
-            "title": {
-              "label": {
-                "type": "i18n",
-                "zh-CN": "链接文案",
-                "en-US": "Text"
-              },
-              "tip": {
-                "type": "i18n",
-                "zh-CN": "属性：children | 说明：超链接文案",
-                "en-US": "prop: children | description: text of the link"
-              }
-            },
-            "setter": "StringSetter",
-            "defaultValue": "这是一个超链接"
-          },
-          {
-            "name": "linkType",
-            "title": "跳转类型",
-            "condition": {
-              "type": "JSFunction",
-              "value": "condition(target) {\n          const _pages_ = target.getProps().getPropValue(\"_pages_\");\n          console.log('_pages_: ', _pages_);\n          return !!_pages_;\n        }"
-            },
-            "defaultValue": "page",
-            "setter": {
-              "componentName": "RadioGroupSetter",
-              "props": {
-                "options": [
-                  {
-                    "value": "page",
-                    "title": "内部页面"
-                  },
-                  {
-                    "value": "link",
-                    "title": "外部链接"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "_redirect_url",
-            "title": "跳转页面",
-            "extraProps": {
-              "getValue": {
-                "type": "JSFunction",
-                "value": "(target, value) => {\n            return target.getProps().getPropValue('href');\n          }"
-              },
-              "setValue": {
-                "type": "JSFunction",
-                "value": "(target, value) => {\n            return target.getProps().setPropValue('href', value);\n          }"
-              }
-            },
-            "setter": {
-              "type": "JSFunction",
-              "value": "(target) => {\n          const data = ((target.getProps().getPropValue('_pages_') || {}).content || []).map(item => {\n            return {\n              title: item.title.zh-CN,\n              value: `#/${item.relateUuid}`,\n            };\n          });\n          return {\n            componentName: 'SelectSetter',\n            props: {\n              options: data\n            },\n          };\n        }"
-            },
-            "condition": {
-              "type": "JSFunction",
-              "value": "condition(target) {\n          return target.getProps().getPropValue(\"linkType\") === 'page';\n        }"
-            }
-          },
-          {
-            "name": "href",
-            "title": {
-              "label": {
-                "type": "i18n",
-                "zh-CN": "跳转链接",
-                "en-US": "Link"
-              },
-              "tip": {
-                "type": "i18n",
-                "zh-CN": "属性：href | 说明：超链接地址",
-                "en-US": "prop: href | description: link address"
-              }
-            },
-            "setter": "StringSetter",
-            "condition": {
-              "type": "JSFunction",
-              "value": "condition(target) {\n          return target.getProps().getPropValue(\"linkType\") === 'link';\n        }"
-            }
-          },
-          {
-            "name": "target",
-            "title": {
-              "label": {
-                "type": "i18n",
-                "zh-CN": "页面目标",
-                "en-US": "Target"
-              },
-              "tip": {
-                "type": "i18n",
-                "zh-CN": "属性：target | 说明：跳转页面目标",
-                "en-US": "prop: target | description: target of new page"
-              }
-            },
-            "setter": {
-              "componentName": "RadioGroupSetter",
-              "props": {
-                "options": [
-                  {
-                    "value": "_self",
-                    "title": "当前页面"
-                  },
-                  {
-                    "value": "_blank",
-                    "title": "新开页面"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "_pages_",
-            "condition": {
-              "type": "JSFunction",
-              "value": "() => false"
-            }
-          }
-        ],
-        "advanced": {
-          "initials": [
-            {
-              "name": "linkType",
-              "initial": {
-                "type": "JSFunction",
-                "value": "() => 'link'"
-              }
-            },
-            {
-              "name": "_pages_",
-              "initial": {
-                "type": "JSFunction",
-                "value": "(target) => {\n          let url = `/uipass/query/formnav/getFormNavigationListByOrder.json${window.location.search}`\n          if (['localhost', '127.0.0.1', 'a7343369-3834-4e55-9f69-e071f489f979-3333.cloud-ide-router.alibaba-inc.com'].includes(window.location.hostname)) {\n            url = 'mock-pages.json';\n          }\n          (AliLowCodeEngine || VisualEngine).editor.utils.get(url)\n            .then((response) => {\n              target.getProps().setPropValue('_pages_', response);\n            });\n        }"
-              }
-            }
-          ],
-          "filters": [],
-          "autoruns": []
-        }
-      },
-      "icon": "",
-      "category": "常用"
-    },
     {
       "componentName": "Message",
       "title": "提示",
@@ -334,7 +94,14 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["success", "warning", "error", "notice", "help", "loading"]
+            "value": [
+              "success",
+              "warning",
+              "error",
+              "notice",
+              "help",
+              "loading"
+            ]
           },
           "description": "反馈类型",
           "defaultValue": "success"
@@ -355,7 +122,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["inline", "addon", "toast"]
+            "value": [
+              "inline",
+              "addon",
+              "toast"
+            ]
           },
           "description": "外观",
           "defaultValue": "inline"
@@ -376,7 +147,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["medium", "large"]
+            "value": [
+              "medium",
+              "large"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -397,7 +171,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "内容"
         },
@@ -551,7 +328,11 @@
             "value": [
               {
                 "type": "oneOf",
-                "value": ["small", "medium", "large"]
+                "value": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               },
               "number"
             ]
@@ -575,7 +356,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["circle", "square"]
+            "value": [
+              "circle",
+              "square"
+            ]
           },
           "description": "头像的形状",
           "defaultValue": "circle"
@@ -684,7 +468,10 @@
           "title": "封顶数字",
           "propType": {
             "type": "oneOfType",
-            "value": ["number", "string"]
+            "value": [
+              "number",
+              "string"
+            ]
           },
           "description": "展示的封顶的数字",
           "defaultValue": 99
@@ -727,7 +514,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "ExpressionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             }
@@ -864,7 +654,10 @@
           "name": "type",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "primary"]
+            "value": [
+              "normal",
+              "primary"
+            ]
           },
           "description": "样式类型",
           "defaultValue": "normal"
@@ -874,7 +667,10 @@
           "title": "触发行为",
           "propType": {
             "type": "oneOf",
-            "value": ["hover", "click"]
+            "value": [
+              "hover",
+              "click"
+            ]
           },
           "description": "触发行为\n鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click",
           "defaultValue": "hover"
@@ -894,7 +690,20 @@
           "title": "弹出位置",
           "propType": {
             "type": "oneOf",
-            "value": ["t", "r", "b", "l", "tl", "tr", "bl", "br", "lt", "lb", "rt", "rb"]
+            "value": [
+              "t",
+              "r",
+              "b",
+              "l",
+              "tl",
+              "tr",
+              "bl",
+              "br",
+              "lt",
+              "lb",
+              "rt",
+              "rb"
+            ]
           },
           "description": "弹出层位置\n@enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合",
           "defaultValue": "b"
@@ -906,7 +715,10 @@
             "value": "number"
           },
           "description": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px",
-          "defaultValue": [0, 0]
+          "defaultValue": [
+            0,
+            0
+          ]
         },
         {
           "name": "popupContainer",
@@ -1048,7 +860,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "FunctionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "FunctionSetter"
+                  ]
                 }
               }
             }
@@ -1100,7 +915,10 @@
           "name": "type",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "primary"]
+            "value": [
+              "normal",
+              "primary"
+            ]
           },
           "description": "样式类型",
           "defaultValue": "normal"
@@ -1110,7 +928,10 @@
           "title": "触发行为",
           "propType": {
             "type": "oneOf",
-            "value": ["hover", "click"]
+            "value": [
+              "hover",
+              "click"
+            ]
           },
           "description": "触发行为\n鼠标悬浮, 鼠标点击('hover','click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若弹窗内容有复杂交互请使用click",
           "defaultValue": "hover"
@@ -1130,7 +951,20 @@
           "title": "弹出位置",
           "propType": {
             "type": "oneOf",
-            "value": ["t", "r", "b", "l", "tl", "tr", "bl", "br", "lt", "lb", "rt", "rb"]
+            "value": [
+              "t",
+              "r",
+              "b",
+              "l",
+              "tl",
+              "tr",
+              "bl",
+              "br",
+              "lt",
+              "lb",
+              "rt",
+              "rb"
+            ]
           },
           "description": "弹出层位置\n@enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合",
           "defaultValue": "b"
@@ -1142,7 +976,10 @@
             "value": "number"
           },
           "description": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px",
-          "defaultValue": [0, 0]
+          "defaultValue": [
+            0,
+            0
+          ]
         },
         {
           "name": "popupContainer",
@@ -1284,7 +1121,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "FunctionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "FunctionSetter"
+                  ]
                 }
               }
             }
@@ -1325,7 +1165,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["row", "column"]
+            "value": [
+              "row",
+              "column"
+            ]
           },
           "defaultValue": "column"
         },
@@ -1344,7 +1187,13 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["flex-start", "center", "flex-end", "space-between", "space-around"]
+            "value": [
+              "flex-start",
+              "center",
+              "flex-end",
+              "space-between",
+              "space-around"
+            ]
           }
         },
         {
@@ -1355,7 +1204,13 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["flex-start", "center", "flex-end", "baseline", "stretch"]
+            "value": [
+              "flex-start",
+              "center",
+              "flex-end",
+              "baseline",
+              "stretch"
+            ]
           }
         },
         {
@@ -1501,7 +1356,9 @@
               "number",
               {
                 "type": "oneOf",
-                "value": ["auto"]
+                "value": [
+                  "auto"
+                ]
               }
             ]
           },
@@ -1520,7 +1377,10 @@
           "name": "component",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "func"]
+            "value": [
+              "string",
+              "func"
+            ]
           },
           "description": "设置标签类型",
           "defaultValue": "nav"
@@ -1538,7 +1398,9 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "childWhitelist": ["Breadcrumb.Item"]
+            "childWhitelist": [
+              "Breadcrumb.Item"
+            ]
           }
         },
         "props": [
@@ -1711,7 +1573,9 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "childWhitelist": ["Button"]
+            "childWhitelist": [
+              "Button"
+            ]
           }
         },
         "props": [
@@ -1733,7 +1597,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -1784,7 +1652,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["primary", "secondary", "normal"]
+            "value": [
+              "primary",
+              "secondary",
+              "normal"
+            ]
           },
           "description": "按钮的类型",
           "defaultValue": "normal"
@@ -1805,7 +1677,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "按钮的尺寸",
           "defaultValue": "medium"
@@ -1826,7 +1702,16 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["xxs", "xs", "small", "medium", "large", "xl", "xxl", "xxxl"]
+            "value": [
+              "xxs",
+              "xs",
+              "small",
+              "medium",
+              "large",
+              "xl",
+              "xxl",
+              "xxxl"
+            ]
           },
           "defaultValue": "small",
           "description": "按钮中 Icon 的尺寸，用于替代 Icon 的默认大小"
@@ -1840,7 +1725,12 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": [true, false, "light", "dark"]
+            "value": [
+              true,
+              false,
+              "light",
+              "dark"
+            ]
           },
           "description": "是否为幽灵按钮",
           "defaultValue": false
@@ -1975,7 +1865,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "ExpressionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             }
@@ -2056,7 +1949,11 @@
           "name": "shape",
           "propType": {
             "type": "oneOf",
-            "value": ["card", "fullscreen", "panel"]
+            "value": [
+              "card",
+              "fullscreen",
+              "panel"
+            ]
           },
           "description": "展现形态",
           "defaultValue": "fullscreen"
@@ -2118,7 +2015,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["card", "fullscreen", "panel"]
+                "options": [
+                  "card",
+                  "fullscreen",
+                  "panel"
+                ]
               }
             }
           },
@@ -2253,7 +2154,10 @@
           "name": "contentHeight",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "number"]
+            "value": [
+              "string",
+              "number"
+            ]
           },
           "description": "内容区域的固定高度",
           "defaultValue": 120
@@ -2507,7 +2411,10 @@
           "name": "title",
           "propType": {
             "type": "oneOfType",
-            "value": ["node", "string"]
+            "value": [
+              "node",
+              "string"
+            ]
           },
           "description": "标题"
         },
@@ -2515,7 +2422,10 @@
           "name": "subTitle",
           "propType": {
             "type": "oneOfType",
-            "value": ["node", "string"]
+            "value": [
+              "node",
+              "string"
+            ]
           },
           "description": "副标题"
         },
@@ -2527,7 +2437,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["node", "string"]
+            "value": [
+              "node",
+              "string"
+            ]
           },
           "description": "标题栏用户自定义内容"
         },
@@ -2536,7 +2449,10 @@
           "title": "内容高度",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "number"]
+            "value": [
+              "string",
+              "number"
+            ]
           },
           "description": "内容区域的固定高度",
           "defaultValue": 120
@@ -2618,7 +2534,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "大小",
           "defaultValue": "medium"
@@ -2667,7 +2587,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["node", "string"]
+            "value": [
+              "node",
+              "string"
+            ]
           },
           "description": "无数据时显示内容",
           "defaultValue": "Not Found"
@@ -2720,7 +2643,10 @@
           "name": "expandTriggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "展开触发方式",
           "defaultValue": "click"
@@ -2871,7 +2797,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -2951,7 +2881,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["click", "hover"]
+                "options": [
+                  "click",
+                  "hover"
+                ]
               }
             },
             "title": "展开触发方式",
@@ -2967,7 +2900,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["StringSetter", "SlotSetter"]
+                "setters": [
+                  "StringSetter",
+                  "SlotSetter"
+                ]
               }
             },
             "defaultValue": "Not Found"
@@ -3065,7 +3001,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "展开触发的方式",
           "defaultValue": "click"
@@ -3294,7 +3233,10 @@
           "name": "itemDirection",
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "子项目的排列方式\n- hoz: 水平排列 (default)\n- ver: 垂直排列",
           "defaultValue": "hoz"
@@ -3319,7 +3261,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -3357,7 +3302,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["JsonSetter", "ExpressionSetter"]
+                "setters": [
+                  "JsonSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -3444,7 +3392,9 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onChange"]
+          "events": [
+            "onChange"
+          ]
         }
       },
       "icon": "",
@@ -3501,7 +3451,12 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -3578,7 +3533,9 @@
           "name": "value",
           "propType": {
             "type": "oneOfType",
-            "value": ["string"]
+            "value": [
+              "string"
+            ]
           },
           "description": "value"
         }
@@ -3591,7 +3548,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["StringSetter", "ExpressionSetter"]
+                "setters": [
+                  "StringSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -3601,7 +3561,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["StringSetter", "ExpressionSetter"]
+                "setters": [
+                  "StringSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -3611,7 +3574,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -3621,7 +3587,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -3640,7 +3609,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             },
             "condition": {
@@ -3690,7 +3662,11 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onChange", "onMouseEnter", "onMouseLeave"]
+          "events": [
+            "onChange",
+            "onMouseEnter",
+            "onMouseLeave"
+          ]
         }
       },
       "icon": "",
@@ -3736,7 +3712,9 @@
       "configure": {
         "component": {
           "nestingRule": {
-            "parentWhitelist": ["Collapse"]
+            "parentWhitelist": [
+              "Collapse"
+            ]
           }
         }
       },
@@ -3821,7 +3799,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["JsonSetter", "ExpressionSetter"]
+                  "setters": [
+                    "JsonSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             }
@@ -3830,105 +3811,6 @@
       },
       "icon": "",
       "category": "内容"
-    },
-    {
-      "title": "柱状图",
-      "category": "常用图表(试验)",
-      "componentName": "ColumnChart",
-      "icon": "https://unpkg.alibaba-inc.com/@ali/vc-bizcharts@1.1.4/src/vc-column/logo.svg",
-      "npm": {
-        "package": "bizcharts",
-        "version": "4.1.11-beta.2",
-        "exportName": "ColumnChart",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "configure": {
-        "props": [
-          {
-            "name": "titleConfig",
-            "title": "标题配置",
-            "display": "block",
-            "type": "group",
-            "items": [
-              {
-                "name": "title.text",
-                "title": "标题",
-                "setter": "StringSetter"
-              },
-              {
-                "name": "title.visible",
-                "title": "是否展示",
-                "setter": "BoolSetter"
-              }
-            ]
-          },
-          {
-            "name": "xFieldConfig",
-            "title": "横坐标",
-            "type": "group",
-            "display": "block",
-            "items": [
-              {
-                "name": "xField",
-                "title": "横坐标标识",
-                "display": "inline",
-                "setter": "StringSetter",
-                "defaultValue": "year",
-                "tip": "标题文本",
-                "supportVariable": true
-              },
-              {
-                "name": "xFieldAlias",
-                "title": "横坐标别名",
-                "display": "inline",
-                "setter": "StringSetter",
-                "setValue": {
-                  "type": "JSFunction",
-                  "value": "(target, value) => {\n              target\n                .getProps()\n                .setPropValue(\n                  `meta.${target.getProps().getPropValue(\"xField\")}.alias`,\n                  value\n                );\n            }"
-                }
-              }
-            ]
-          },
-          {
-            "name": "yFieldConfig",
-            "title": "纵坐标",
-            "type": "group",
-            "display": "block",
-            "items": [
-              {
-                "name": "yField",
-                "title": "纵坐标标识",
-                "display": "inline",
-                "setter": "StringSetter",
-                "defaultValue": "year",
-                "tip": "标题文本",
-                "supportVariable": true
-              },
-              {
-                "name": "yFieldAlias",
-                "title": "纵坐标别名",
-                "display": "inline",
-                "setter": "StringSetter",
-                "setValue": {
-                  "type": "JSFunction",
-                  "value": "(target, value) => {\n              target\n                .getProps()\n                .setPropValue(\n                  `meta.${target.getProps().getPropValue(\"yField\")}.alias`,\n                  value\n                );\n            }"
-                }
-              }
-            ]
-          },
-          {
-            "name": "data",
-            "title": "图表数据",
-            "tip": "配置图表数据",
-            "setter": "JsonSetter"
-          }
-        ],
-        "supports": {
-          "style": true
-        }
-      }
     },
     {
       "componentName": "DatePicker",
@@ -3980,7 +3862,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["success", "loading", "error"]
+            "value": [
+              "success",
+              "loading",
+              "error"
+            ]
           },
           "description": "state|输入框状态"
         },
@@ -4042,7 +3928,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "size|输入框尺寸",
           "defaultValue": "medium"
@@ -4202,7 +4092,10 @@
           "name": "visible",
           "propType": {
             "type": "oneOfType",
-            "value": ["JSExpression", "bool"]
+            "value": [
+              "JSExpression",
+              "bool"
+            ]
           },
           "description": "是否显示",
           "defaultValue": false
@@ -4211,7 +4104,10 @@
           "name": "title",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "标题"
         },
@@ -4233,7 +4129,9 @@
           "name": "footer",
           "propType": {
             "type": "oneOfType",
-            "value": ["bool"]
+            "value": [
+              "bool"
+            ]
           },
           "description": "底部按钮"
         },
@@ -4241,7 +4139,11 @@
           "name": "footerAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["left", "center", "right"]
+            "value": [
+              "left",
+              "center",
+              "right"
+            ]
           },
           "description": "操作对齐方式",
           "defaultValue": "right"
@@ -4250,7 +4152,13 @@
           "name": "closeable",
           "propType": {
             "type": "oneOf",
-            "value": ["close", "mask", "esc,close", "close,esc,mask", "esc"]
+            "value": [
+              "close",
+              "mask",
+              "esc,close",
+              "close,esc,mask",
+              "esc"
+            ]
           },
           "description": "关闭方式",
           "defaultValue": "esc,close"
@@ -4270,7 +4178,10 @@
           "name": "animation",
           "propType": {
             "type": "oneOfType",
-            "value": ["object", "bool"]
+            "value": [
+              "object",
+              "bool"
+            ]
           },
           "description": "显示隐藏时动画的播放方式\n@property {String} in 进场动画\n@property {String} out 出场动画"
         },
@@ -4297,7 +4208,9 @@
           "isModal": true,
           "rootSelector": "div.next-dialog",
           "nestingRule": {
-            "parentWhitelist": ["Page"]
+            "parentWhitelist": [
+              "Page"
+            ]
           }
         },
         "props": [
@@ -4342,7 +4255,10 @@
                 ]
               }
             },
-            "initialValue": ["esc", "close"]
+            "initialValue": [
+              "esc",
+              "close"
+            ]
           },
           {
             "name": "autoFocus",
@@ -4396,31 +4312,47 @@
               {
                 "name": "footerActions",
                 "title": "排列方式",
-                "initialValue": ["ok", "cancel"],
+                "initialValue": [
+                  "ok",
+                  "cancel"
+                ],
                 "condition": {
                   "type": "JSFunction",
                   "value": "target => {\n              return target.getProps().getPropValue(\"footer\");\n            }"
                 },
                 "setter": {
                   "componentName": "SelectSetter",
-                  "initialValue": ["ok", "cancel"],
+                  "initialValue": [
+                    "ok",
+                    "cancel"
+                  ],
                   "props": {
                     "options": [
                       {
                         "title": "ok, cancel",
-                        "value": ["ok", "cancel"]
+                        "value": [
+                          "ok",
+                          "cancel"
+                        ]
                       },
                       {
                         "title": "cancel, ok",
-                        "value": ["cancel", "ok"]
+                        "value": [
+                          "cancel",
+                          "ok"
+                        ]
                       },
                       {
                         "title": "cancel",
-                        "value": ["cancel"]
+                        "value": [
+                          "cancel"
+                        ]
                       },
                       {
                         "title": "ok",
-                        "value": ["ok"]
+                        "value": [
+                          "ok"
+                        ]
                       }
                     ]
                   }
@@ -4430,7 +4362,11 @@
           }
         ],
         "supports": {
-          "events": ["onOk", "onCancel", "onClose"],
+          "events": [
+            "onOk",
+            "onCancel",
+            "onClose"
+          ],
           "style": true
         },
         "advanced": {
@@ -4506,7 +4442,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "线是水平还是垂直类型",
           "defaultValue": "hoz"
@@ -4522,7 +4461,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["left", "right", "center"]
+            "value": [
+              "left",
+              "right",
+              "center"
+            ]
           },
           "description": "分割线标题的位置",
           "defaultValue": "center"
@@ -4580,7 +4523,12 @@
           "name": "placement",
           "propType": {
             "type": "oneOf",
-            "value": ["top", "right", "bottom", "left"]
+            "value": [
+              "top",
+              "right",
+              "bottom",
+              "left"
+            ]
           }
         },
         {
@@ -4672,7 +4620,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["number", "string"]
+            "value": [
+              "number",
+              "string"
+            ]
           },
           "description": "宽度，仅在 placement是 left right 的时候生效"
         },
@@ -4686,7 +4637,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["number", "string"]
+            "value": [
+              "number",
+              "string"
+            ]
           },
           "description": "高度，仅在 placement是 top bottom 的时候生效"
         },
@@ -4694,7 +4648,12 @@
           "name": "placement",
           "propType": {
             "type": "oneOf",
-            "value": ["top", "right", "bottom", "left"]
+            "value": [
+              "top",
+              "right",
+              "bottom",
+              "left"
+            ]
           },
           "description": "位于页面的位置",
           "defaultValue": "right"
@@ -4703,7 +4662,10 @@
           "name": "title",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "标题"
         },
@@ -4745,7 +4707,10 @@
           "name": "closeable",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "bool"]
+            "value": [
+              "string",
+              "bool"
+            ]
           },
           "description": "控制对话框关闭的方式，值可以为字符串或者布尔值，其中字符串是由以下值组成：\n**close** 表示点击关闭按钮可以关闭对话框\n**mask** 表示点击遮罩区域可以关闭对话框\n**esc** 表示按下 esc 键可以关闭对话框\n如 'close' 或 'close,esc,mask'\n如果设置为 true，则以上关闭方式全部生效\n如果设置为 false，则以上关闭方式全部失效",
           "defaultValue": true
@@ -4848,7 +4813,12 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["top", "right", "bottom", "left"]
+                "options": [
+                  "top",
+                  "right",
+                  "bottom",
+                  "left"
+                ]
               }
             },
             "description": "位于页面的位置",
@@ -5010,7 +4980,10 @@
             "value": "array"
           },
           "description": "弹层相对于trigger的定位的微调, 接收数组[hoz, ver], 表示弹层在 left / top 上的增量\ne.g. [100, 100] 表示往右(RTL 模式下是往左) 、下分布偏移100px",
-          "defaultValue": [0, 0]
+          "defaultValue": [
+            0,
+            0
+          ]
         },
         {
           "name": "delay",
@@ -5039,7 +5012,10 @@
           "name": "animation",
           "propType": {
             "type": "oneOfType",
-            "value": ["object", "bool"]
+            "value": [
+              "object",
+              "bool"
+            ]
           },
           "description": "配置动画的播放方式，支持 { in: 'enter-class', out: 'leave-class' } 的对象参数，如果设置为 false，则不播放动画\n@default { in: 'expandInDown', out: 'expandOutUp' }"
         },
@@ -5325,7 +5301,12 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["error", "success", "loading", "warning"]
+            "value": [
+              "error",
+              "success",
+              "loading",
+              "warning"
+            ]
           },
           "description": "校验状态，如不设置，则会根据校验规则自动生成\n@enumdesc 失败, 成功, 校验中, 警告"
         },
@@ -5342,7 +5323,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["large", "small", "medium"]
+            "value": [
+              "large",
+              "small",
+              "medium"
+            ]
           },
           "description": "单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。"
         },
@@ -5363,7 +5348,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["top", "left", "inset"]
+            "value": [
+              "top",
+              "left",
+              "inset"
+            ]
           },
           "description": "标签的位置\n@enumdesc 上, 左, 内"
         },
@@ -5375,7 +5364,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["left", "right"]
+            "value": [
+              "left",
+              "right"
+            ]
           },
           "description": "标签的左右对齐方式\n@enumdesc 左, 右"
         },
@@ -5500,7 +5492,12 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["number", "email", "url", "tel"]
+            "value": [
+              "number",
+              "email",
+              "url",
+              "tel"
+            ]
           },
           "description": "[表单校验] 四种常用的 pattern"
         },
@@ -5527,7 +5524,11 @@
           "name": "device",
           "propType": {
             "type": "oneOf",
-            "value": ["phone", "tablet", "desktop"]
+            "value": [
+              "phone",
+              "tablet",
+              "desktop"
+            ]
           },
           "description": "预设屏幕宽度"
         },
@@ -5544,7 +5545,10 @@
           "name": "labelWidth",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "number"]
+            "value": [
+              "string",
+              "number"
+            ]
           },
           "description": "在响应式布局下，且label在左边时，label的宽度是多少",
           "defaultValue": 100
@@ -5559,7 +5563,9 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Form"]
+            "parentWhitelist": [
+              "Form"
+            ]
           }
         },
         "supports": {
@@ -5625,7 +5631,12 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["error", "success", "loading", "warning"]
+                "options": [
+                  "error",
+                  "success",
+                  "loading",
+                  "warning"
+                ]
               }
             }
           },
@@ -5638,7 +5649,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -5652,7 +5667,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["top", "left", "inset"]
+                "options": [
+                  "top",
+                  "left",
+                  "inset"
+                ]
               }
             },
             "defaultValue": "left"
@@ -5666,7 +5685,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["left", "right"]
+                "options": [
+                  "left",
+                  "right"
+                ]
               }
             },
             "defaultValue": "left"
@@ -5679,7 +5701,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["phone", "tablet", "desktop"]
+                "options": [
+                  "phone",
+                  "tablet",
+                  "desktop"
+                ]
               }
             },
             "defaultValue": "desktop"
@@ -5870,7 +5896,12 @@
                     "setter": {
                       "componentName": "RadioGroupSetter",
                       "props": {
-                        "options": ["number", "email", "url", "tel"]
+                        "options": [
+                          "number",
+                          "email",
+                          "url",
+                          "tel"
+                        ]
                       }
                     },
                     "description": "[表单校验] 四种常用的 pattern"
@@ -6042,7 +6073,11 @@
           "title": "类型",
           "propType": {
             "type": "oneOf",
-            "value": ["primary", "secondary", "normal"]
+            "value": [
+              "primary",
+              "secondary",
+              "normal"
+            ]
           },
           "description": "按钮的类型",
           "defaultValue": "normal"
@@ -6052,7 +6087,11 @@
           "title": "尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "按钮的尺寸",
           "defaultValue": "medium"
@@ -6062,7 +6101,16 @@
           "title": "Icon 尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["xxs", "xs", "small", "medium", "large", "xl", "xxl", "xxxl"]
+            "value": [
+              "xxs",
+              "xs",
+              "small",
+              "medium",
+              "large",
+              "xl",
+              "xxl",
+              "xxxl"
+            ]
           },
           "defaultValue": "small",
           "description": "按钮中 Icon 的尺寸，用于替代 Icon 的默认大小"
@@ -6072,7 +6120,12 @@
           "title": "ghost",
           "propType": {
             "type": "oneOf",
-            "value": [true, false, "light", "dark"]
+            "value": [
+              true,
+              false,
+              "light",
+              "dark"
+            ]
           },
           "description": "是否为幽灵按钮",
           "defaultValue": false
@@ -6149,7 +6202,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "ExpressionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             }
@@ -6196,7 +6252,11 @@
           "title": "类型",
           "propType": {
             "type": "oneOf",
-            "value": ["primary", "secondary", "normal"]
+            "value": [
+              "primary",
+              "secondary",
+              "normal"
+            ]
           },
           "description": "按钮的类型",
           "defaultValue": "normal"
@@ -6206,7 +6266,11 @@
           "title": "尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "按钮的尺寸",
           "defaultValue": "medium"
@@ -6216,7 +6280,16 @@
           "title": "Icon 尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["xxs", "xs", "small", "medium", "large", "xl", "xxl", "xxxl"]
+            "value": [
+              "xxs",
+              "xs",
+              "small",
+              "medium",
+              "large",
+              "xl",
+              "xxl",
+              "xxxl"
+            ]
           },
           "defaultValue": "small",
           "description": "按钮中 Icon 的尺寸，用于替代 Icon 的默认大小"
@@ -6226,7 +6299,12 @@
           "title": "ghost",
           "propType": {
             "type": "oneOf",
-            "value": [true, false, "light", "dark"]
+            "value": [
+              true,
+              false,
+              "light",
+              "dark"
+            ]
           },
           "description": "是否为幽灵按钮",
           "defaultValue": false
@@ -6308,7 +6386,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["ExpressionSetter", "BoolSetter"]
+                  "setters": [
+                    "ExpressionSetter",
+                    "BoolSetter"
+                  ]
                 }
               }
             },
@@ -6336,7 +6417,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "ExpressionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             }
@@ -6383,7 +6467,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["large", "medium", "small"]
+            "value": [
+              "large",
+              "medium",
+              "small"
+            ]
           },
           "description": "单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。\n@enumdesc 大, 中, 小",
           "defaultValue": "medium"
@@ -6401,7 +6489,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["top", "left", "inset"]
+            "value": [
+              "top",
+              "left",
+              "inset"
+            ]
           },
           "description": "标签的位置\n@enumdesc 上, 左, 内",
           "defaultValue": "left"
@@ -6410,7 +6502,10 @@
           "name": "labelTextAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["left", "right"]
+            "value": [
+              "left",
+              "right"
+            ]
           },
           "description": "标签的左右对齐方式\n@enumdesc 左, 右"
         },
@@ -6433,7 +6528,10 @@
           "name": "value",
           "propType": {
             "type": "oneOfType",
-            "value": ["Json", "JSExpression"]
+            "value": [
+              "Json",
+              "JSExpression"
+            ]
           },
           "description": "表单数值"
         },
@@ -6450,7 +6548,11 @@
           "name": "device",
           "propType": {
             "type": "oneOf",
-            "value": ["phone", "tablet", "desktop"]
+            "value": [
+              "phone",
+              "tablet",
+              "desktop"
+            ]
           },
           "description": "预设屏幕宽度",
           "defaultValue": "desktop"
@@ -6561,7 +6663,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["JsonSetter", "ExpressionSetter"]
+                "setters": [
+                  "JsonSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -6582,7 +6687,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["large", "medium", "small"]
+                "options": [
+                  "large",
+                  "medium",
+                  "small"
+                ]
               }
             },
             "description": "单个 Item 的 size 自定义，优先级高于 Form 的 size, 并且当组件与 Item 一起使用时，组件自身设置 size 属性无效。\n@enumdesc 大, 中, 小",
@@ -6605,7 +6714,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["top", "left", "inset"]
+                "options": [
+                  "top",
+                  "left",
+                  "inset"
+                ]
               }
             },
             "defaultValue": "left"
@@ -6627,7 +6740,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["left", "right"]
+                "options": [
+                  "left",
+                  "right"
+                ]
               }
             },
             "defaultValue": "left"
@@ -6649,7 +6765,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["phone", "tablet", "desktop"]
+                "options": [
+                  "phone",
+                  "tablet",
+                  "desktop"
+                ]
               }
             },
             "defaultValue": "desktop"
@@ -6657,7 +6777,11 @@
         ],
         "supports": {
           "style": true,
-          "events": ["saveField", "onSubmit", "onChange"]
+          "events": [
+            "saveField",
+            "onSubmit",
+            "onChange"
+          ]
         },
         "advanced": {
           "callbacks": {
@@ -6751,7 +6875,17 @@
             "value": [
               {
                 "type": "oneOf",
-                "value": ["xxs", "xs", "small", "medium", "large", "xl", "xxl", "xxxl", "inherit"]
+                "value": [
+                  "xxs",
+                  "xs",
+                  "small",
+                  "medium",
+                  "large",
+                  "xl",
+                  "xxl",
+                  "xxxl",
+                  "inherit"
+                ]
               },
               "number"
             ]
@@ -6798,65 +6932,6 @@
       },
       "icon": "",
       "category": "内容"
-    },
-    {
-      "componentName": "Image",
-      "title": "图片",
-      "npm": {
-        "package": "@alifd/ali-lowcode-components",
-        "version": "latest",
-        "exportName": "Image",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "props": [
-        {
-          "name": "src",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "图片链接",
-              "en-US": "Image Address"
-            },
-            "tip": {
-              "type": "i18n",
-              "zh-CN": "属性: src | 说明: 图片链接",
-              "en-US": "prop: src | description: image address"
-            }
-          },
-          "propType": "string",
-          "defaultValue": "https://img.alicdn.com/tps/TB16TQvOXXXXXbiaFXXXXXXXXXX-120-120.svg"
-        },
-        {
-          "name": "title",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "标题",
-              "en-US": "Title"
-            }
-          },
-          "propType": "string"
-        },
-        {
-          "name": "alt",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "代替文本",
-              "en-US": "Alt"
-            }
-          },
-          "propType": "string"
-        },
-        {
-          "name": "style",
-          "propType": "object"
-        }
-      ],
-      "icon": "",
-      "category": "常用"
     },
     {
       "componentName": "Inner",
@@ -6912,7 +6987,11 @@
           "name": "footerAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["left", "center", "right"]
+            "value": [
+              "left",
+              "center",
+              "right"
+            ]
           },
           "defaultValue": "right"
         },
@@ -6922,7 +7001,10 @@
             "type": "instanceOf",
             "value": "array"
           },
-          "defaultValue": ["ok", "cancel"]
+          "defaultValue": [
+            "ok",
+            "cancel"
+          ]
         },
         {
           "name": "onOk",
@@ -7082,7 +7164,12 @@
           "title": "状态",
           "propType": {
             "type": "oneOf",
-            "value": ["error", "loading", "success", "warning"]
+            "value": [
+              "error",
+              "loading",
+              "success",
+              "warning"
+            ]
           },
           "description": "状态\n@enumdesc 错误, 校验中, 成功, 警告"
         },
@@ -7091,7 +7178,11 @@
           "title": "尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "尺寸\n@enumdesc 小, 中, 大",
           "defaultValue": "medium"
@@ -7276,7 +7367,12 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["error", "loading", "success", "warning"]
+                "options": [
+                  "error",
+                  "loading",
+                  "success",
+                  "warning"
+                ]
               }
             }
           },
@@ -7297,7 +7393,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -7615,7 +7715,14 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onPressEnter", "onClear", "onChange", "onKeyDown", "onFocus", "onBlur"]
+          "events": [
+            "onPressEnter",
+            "onClear",
+            "onChange",
+            "onKeyDown",
+            "onFocus",
+            "onBlur"
+          ]
         }
       },
       "category": "基础"
@@ -7644,7 +7751,10 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["error", "warning"]
+            "value": [
+              "error",
+              "warning"
+            ]
           },
           "description": "状态\n@enumdesc 错误"
         },
@@ -7760,7 +7870,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["error", "warning"]
+                "options": [
+                  "error",
+                  "warning"
+                ]
               }
             }
           },
@@ -7957,7 +8070,14 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onPressEnter", "onClear", "onChange", "onKeyDown", "onFocus", "onBlur"]
+          "events": [
+            "onPressEnter",
+            "onClear",
+            "onChange",
+            "onKeyDown",
+            "onFocus",
+            "onBlur"
+          ]
         }
       },
       "category": "基础"
@@ -8001,7 +8121,12 @@
           "title": "状态",
           "propType": {
             "type": "oneOf",
-            "value": ["error", "loading", "success", "warning"]
+            "value": [
+              "error",
+              "loading",
+              "success",
+              "warning"
+            ]
           },
           "description": "状态\n@enumdesc 错误, 校验中, 成功, 警告"
         },
@@ -8010,7 +8135,11 @@
           "title": "尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "尺寸\n@enumdesc 小, 中, 大",
           "defaultValue": "medium"
@@ -8178,7 +8307,12 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["error", "loading", "success", "warning"]
+                "options": [
+                  "error",
+                  "loading",
+                  "success",
+                  "warning"
+                ]
               }
             }
           },
@@ -8199,7 +8333,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -8517,74 +8655,18 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onPressEnter", "onClear", "onChange", "onKeyDown", "onFocus", "onBlur"]
+          "events": [
+            "onPressEnter",
+            "onClear",
+            "onChange",
+            "onKeyDown",
+            "onFocus",
+            "onBlur"
+          ]
         }
       },
       "icon": "",
       "category": "内容"
-    },
-    {
-      "title": "折线图",
-      "category": "常用图表(试验)",
-      "componentName": "LineChart",
-      "icon": "https://unpkg.alibaba-inc.com/@ali/vc-bizcharts@1.1.4/src/vc-line/logo.svg",
-      "npm": {
-        "package": "bizcharts",
-        "version": "4.0.14",
-        "exportName": "LineChart",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "configure": {
-        "props": [
-          {
-            "name": "title",
-            "title": "标题",
-            "display": "inline",
-            "setter": "StringSetter",
-            "defaultValue": "折线图标题",
-            "tip": "标题文本",
-            "supportVariable": true
-          },
-          {
-            "name": "description",
-            "title": "描述",
-            "display": "inline",
-            "setter": "StringSetter",
-            "defaultValue": "折线图描述",
-            "tip": "描述文本",
-            "supportVariable": true
-          },
-          {
-            "name": "xField",
-            "title": "横坐标",
-            "display": "inline",
-            "setter": "StringSetter",
-            "defaultValue": "year",
-            "tip": "标题文本",
-            "supportVariable": true
-          },
-          {
-            "name": "yField",
-            "title": "纵坐标",
-            "display": "inline",
-            "setter": "StringSetter",
-            "defaultValue": "value",
-            "tip": "描述文本",
-            "supportVariable": true
-          },
-          {
-            "name": "data",
-            "title": "图表数据",
-            "tip": "配置图表数据",
-            "setter": "JsonSetter"
-          }
-        ],
-        "supports": {
-          "style": true
-        }
-      }
     },
     {
       "title": "折线",
@@ -8650,69 +8732,6 @@
       }
     },
     {
-      "title": "水位图",
-      "category": "常用图表(试验)",
-      "componentName": "LiquidChart",
-      "icon": "https://unpkg.alibaba-inc.com/@ali/vc-bizcharts@1.1.4/src/vc-LiquidChart/logo.svg",
-      "npm": {
-        "package": "bizcharts",
-        "version": "4.0.14",
-        "exportName": "LiquidChart",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "configure": {
-        "props": [
-          {
-            "name": "title",
-            "title": "标题",
-            "display": "inline",
-            "setter": "StringSetter",
-            "defaultValue": "水位图标题",
-            "tip": "标题文本",
-            "supportVariable": true
-          },
-          {
-            "name": "description",
-            "title": "描述",
-            "display": "inline",
-            "setter": "StringSetter",
-            "defaultValue": "水位图描述",
-            "tip": "描述文本",
-            "supportVariable": true
-          },
-          {
-            "name": "dataSource",
-            "title": "图表数据",
-            "type": "group",
-            "display": "block",
-            "tip": "配置图表数据",
-            "items": [
-              {
-                "name": "min",
-                "title": "最小值",
-                "setter": "NumberSetter"
-              },
-              {
-                "name": "max",
-                "title": "最大值",
-                "setter": "NumberSetter"
-              },
-              {
-                "name": "value",
-                "title": "值",
-                "setter": "NumberSetter"
-              }
-            ]
-          }
-        ],
-        "supports": {
-          "style": true
-        }
-      }
-    },
-    {
       "componentName": "List.Item",
       "title": "列表项",
       "docUrl": "",
@@ -8734,28 +8753,40 @@
           "name": "title",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         },
         {
           "name": "description",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         },
         {
           "name": "media",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         },
         {
           "name": "extra",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         }
       ],
@@ -8789,28 +8820,40 @@
           "name": "header",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         },
         {
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium"]
+            "value": [
+              "small",
+              "medium"
+            ]
           }
         },
         {
           "name": "footer",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         },
         {
           "name": "divider",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           }
         }
       ],
@@ -8845,7 +8888,10 @@
           "name": "tipAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["right", "bottom"]
+            "value": [
+              "right",
+              "bottom"
+            ]
           },
           "description": "自定义内容位置",
           "defaultValue": "bottom"
@@ -8874,7 +8920,10 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["large", "medium"]
+            "value": [
+              "large",
+              "medium"
+            ]
           },
           "description": "设置动画尺寸\n@description 仅仅对默认动画效果起作用\n@enumdesc 大号, 中号",
           "defaultValue": "large"
@@ -8911,7 +8960,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["StringSetter", "ExpressionSetter"]
+                "setters": [
+                  "StringSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -8945,7 +8997,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -8990,7 +9045,9 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onVisibleChange"]
+          "events": [
+            "onVisibleChange"
+          ]
         }
       },
       "icon": "",
@@ -9025,7 +9082,10 @@
           "name": "popupTriggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "弹层触发方式",
           "defaultValue": "click"
@@ -9091,7 +9151,10 @@
           "name": "selectMode",
           "propType": {
             "type": "oneOf",
-            "value": ["single", "multiple"]
+            "value": [
+              "single",
+              "multiple"
+            ]
           },
           "description": "菜单的选择模式，同 Menu"
         },
@@ -9131,7 +9194,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["StringSetter", "FunctionSetter"]
+                  "setters": [
+                    "StringSetter",
+                    "FunctionSetter"
+                  ]
                 }
               }
             }
@@ -9164,7 +9230,12 @@
         "component": {
           "isContainer": false,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -9202,7 +9273,12 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -9248,7 +9324,12 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -9293,7 +9374,12 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -9334,7 +9420,10 @@
           "name": "mode",
           "propType": {
             "type": "oneOf",
-            "value": ["inline", "popup"]
+            "value": [
+              "inline",
+              "popup"
+            ]
           },
           "description": "子菜单打开的模式",
           "defaultValue": "inline"
@@ -9343,7 +9432,10 @@
           "name": "triggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "子菜单打开的触发行为",
           "defaultValue": "click"
@@ -9352,7 +9444,10 @@
           "name": "openMode",
           "propType": {
             "type": "oneOf",
-            "value": ["single", "multiple"]
+            "value": [
+              "single",
+              "multiple"
+            ]
           },
           "description": "展开内连子菜单的模式，同时可以展开一个子菜单还是多个子菜单，该属性仅在 mode 为 inline 时生效",
           "defaultValue": "multiple"
@@ -9367,7 +9462,10 @@
           "name": "inlineArrowDirection",
           "propType": {
             "type": "oneOf",
-            "value": ["down", "right"]
+            "value": [
+              "down",
+              "right"
+            ]
           },
           "defaultValue": "down"
         },
@@ -9381,7 +9479,10 @@
           "name": "popupAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["follow", "outside"]
+            "value": [
+              "follow",
+              "outside"
+            ]
           },
           "description": "弹层的对齐方式",
           "defaultValue": "follow"
@@ -9400,7 +9501,10 @@
           "name": "selectMode",
           "propType": {
             "type": "oneOf",
-            "value": ["single", "multiple"]
+            "value": [
+              "single",
+              "multiple"
+            ]
           },
           "description": "选中模式，单选还是多选，默认无值，不可选"
         },
@@ -9431,7 +9535,10 @@
           "name": "direction",
           "propType": {
             "type": "oneOf",
-            "value": ["ver", "hoz"]
+            "value": [
+              "ver",
+              "hoz"
+            ]
           },
           "description": "菜单第一层展示方向",
           "defaultValue": "ver"
@@ -9440,7 +9547,10 @@
           "name": "hozAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["left", "right"]
+            "value": [
+              "left",
+              "right"
+            ]
           },
           "description": "横向菜单条 item 和 footer 的对齐方向，在 direction 设置为 'hoz' 并且 header 存在时生效",
           "defaultValue": "left"
@@ -9611,7 +9721,11 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["success", "loading", "error"]
+            "value": [
+              "success",
+              "loading",
+              "error"
+            ]
           },
           "description": "输入框状态"
         },
@@ -9666,7 +9780,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "输入框尺寸",
           "defaultValue": "medium"
@@ -9701,7 +9819,10 @@
           "name": "popupTriggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "弹层触发方式",
           "defaultValue": "click"
@@ -9824,7 +9945,10 @@
           "name": "children",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "导航内容"
         },
@@ -9863,7 +9987,12 @@
           "name": "type",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "primary", "secondary", "line"]
+            "value": [
+              "normal",
+              "primary",
+              "secondary",
+              "line"
+            ]
           },
           "description": "导航类型",
           "defaultValue": "normal"
@@ -9872,7 +10001,10 @@
           "name": "direction",
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "导航布局",
           "defaultValue": "ver"
@@ -9881,7 +10013,10 @@
           "name": "hozAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["left", "right"]
+            "value": [
+              "left",
+              "right"
+            ]
           },
           "description": "对齐方向",
           "defaultValue": "left"
@@ -9890,7 +10025,13 @@
           "name": "activeDirection",
           "propType": {
             "type": "oneOf",
-            "value": [null, "top", "bottom", "left", "right"]
+            "value": [
+              null,
+              "top",
+              "bottom",
+              "left",
+              "right"
+            ]
           },
           "description": "选中条方向"
         },
@@ -9898,7 +10039,10 @@
           "name": "mode",
           "propType": {
             "type": "oneOf",
-            "value": ["inline", "popup"]
+            "value": [
+              "inline",
+              "popup"
+            ]
           },
           "description": "子导航打开的模式",
           "defaultValue": "inline"
@@ -9907,7 +10051,10 @@
           "name": "triggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "子导航打开的触发方式",
           "defaultValue": "click"
@@ -9928,7 +10075,10 @@
           "name": "openMode",
           "propType": {
             "type": "oneOf",
-            "value": ["single", "multiple"]
+            "value": [
+              "single",
+              "multiple"
+            ]
           },
           "description": "内联子导航的展开模式",
           "defaultValue": "multiple"
@@ -9970,7 +10120,10 @@
           "name": "popupAlign",
           "propType": {
             "type": "oneOf",
-            "value": ["follow", "outside"]
+            "value": [
+              "follow",
+              "outside"
+            ]
           },
           "description": "弹出子导航的对齐方式（水平导航只支持 follow ）\n@eumdesc Item 顶端对齐, Nav 顶端对齐",
           "defaultValue": "follow"
@@ -10082,7 +10235,13 @@
                   "description": "编辑类型",
                   "propType": {
                     "type": "oneOf",
-                    "value": ["select", "text", "radio", "date", "employee"]
+                    "value": [
+                      "select",
+                      "text",
+                      "radio",
+                      "date",
+                      "employee"
+                    ]
                   },
                   "defaultValue": "Key"
                 }
@@ -10095,7 +10254,10 @@
           "title": "数据源",
           "propType": {
             "type": "oneOfType",
-            "value": ["Json", "JSExpression"]
+            "value": [
+              "Json",
+              "JSExpression"
+            ]
           }
         },
         {
@@ -10165,7 +10327,11 @@
                         "componentName": "SlotSetter",
                         "initialValue": {
                           "type": "JSSlot",
-                          "params": ["value", "index", "record"],
+                          "params": [
+                            "value",
+                            "index",
+                            "record"
+                          ],
                           "value": []
                         }
                       }
@@ -10177,7 +10343,11 @@
                         "componentName": "SlotSetter",
                         "initialValue": {
                           "type": "JSSlot",
-                          "params": ["value", "index", "record"],
+                          "params": [
+                            "value",
+                            "index",
+                            "record"
+                          ],
                           "value": []
                         }
                       }
@@ -10722,7 +10892,9 @@
                                   "title": "单元格自定义",
                                   "initialValue": {
                                     "type": "JSSlot",
-                                    "params": [""],
+                                    "params": [
+                                      ""
+                                    ],
                                     "value": [
                                       {
                                         "componentName": "Box"
@@ -10755,7 +10927,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["JsonSetter", "ExpressionSetter"]
+                "setters": [
+                  "JsonSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -10879,48 +11054,6 @@
       "category": "内容"
     },
     {
-      "componentName": "Wrapper",
-      "title": "备注容器",
-      "category": "Others",
-      "npm": {
-        "package": "@alifd/ali-lowcode-components",
-        "version": "latest",
-        "exportName": "NoteWrapper",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "props": [
-        {
-          "name": "style",
-          "propType": "object"
-        },
-        {
-          "name": "note",
-          "propType": "string",
-          "defaultValue": "这是一个备注"
-        }
-      ],
-      "configure": {
-        "component": {
-          "isContainer": true,
-          "isModal": false
-        },
-        "props": [
-          {
-            "name": "style",
-            "setter": "StyleSetter"
-          },
-          {
-            "name": "note",
-            "propType": "string",
-            "setter": "StringSetter"
-          }
-        ]
-      },
-      "icon": ""
-    },
-    {
       "componentName": "NumberPicker",
       "title": "数字输入框",
       "docUrl": "",
@@ -10938,7 +11071,10 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["large", "medium"]
+            "value": [
+              "large",
+              "medium"
+            ]
           },
           "description": "大小",
           "defaultValue": "medium"
@@ -10947,7 +11083,10 @@
           "name": "type",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "inline"]
+            "value": [
+              "normal",
+              "inline"
+            ]
           },
           "description": "设置类型",
           "defaultValue": "normal"
@@ -11026,7 +11165,10 @@
           "name": "innerAfter",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "icon"]
+            "value": [
+              "string",
+              "icon"
+            ]
           },
           "description": "inner after"
         },
@@ -11089,12 +11231,18 @@
           {
             "name": "value",
             "title": "当前值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "defaultValue",
             "title": "默认值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "size",
@@ -11113,7 +11261,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -11149,35 +11301,53 @@
           {
             "name": "innerAfter",
             "title": "单位",
-            "setter": ["StringSetter", "ExpressionSetter"]
+            "setter": [
+              "StringSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "step",
             "title": "步长",
             "defaultValue": 1,
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "precision",
             "title": "小数位数",
             "defaultValue": 0,
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "max",
             "title": "最大值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "min",
             "title": "最小值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "editable",
             "title": "可以输入",
             "defaultValue": true,
-            "setter": ["BoolSetter", "ExpressionSetter"]
+            "setter": [
+              "BoolSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "format",
@@ -11234,7 +11404,13 @@
           }
         ],
         "supports": {
-          "events": ["onChange", "onKeyDown", "onFocus", "onBlur", "onCorrect"]
+          "events": [
+            "onChange",
+            "onKeyDown",
+            "onFocus",
+            "onBlur",
+            "onCorrect"
+          ]
         }
       },
       "icon": "",
@@ -11294,7 +11470,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "simple", "mini"]
+            "value": [
+              "normal",
+              "simple",
+              "mini"
+            ]
           },
           "description": "分页组件类型",
           "defaultValue": "normal"
@@ -11307,7 +11487,12 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "arrow-only", "arrow-prev-only", "no-border"]
+            "value": [
+              "normal",
+              "arrow-only",
+              "arrow-prev-only",
+              "no-border"
+            ]
           },
           "description": "前进后退按钮样式",
           "defaultValue": "normal"
@@ -11320,7 +11505,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "分页组件大小",
           "defaultValue": "medium"
@@ -11386,7 +11575,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": [false, "filter", "dropdown"]
+            "value": [
+              false,
+              "filter",
+              "dropdown"
+            ]
           },
           "description": "每页显示选择器类型",
           "defaultValue": false
@@ -11407,7 +11600,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["start", "end"]
+            "value": [
+              "start",
+              "end"
+            ]
           },
           "description": "每页显示选择器在组件中的位置",
           "defaultValue": "start"
@@ -11473,7 +11669,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["NumberSetter", "ExpressionSetter"]
+                  "setters": [
+                    "NumberSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             },
@@ -11486,7 +11685,10 @@
               "setter": {
                 "componentName": "MixedSetter",
                 "props": {
-                  "setters": ["NumberSetter", "ExpressionSetter"]
+                  "setters": [
+                    "NumberSetter",
+                    "ExpressionSetter"
+                  ]
                 }
               }
             }
@@ -11538,81 +11740,6 @@
         }
       ],
       "category": "基础"
-    },
-    {
-      "title": "饼图",
-      "category": "常用图表(试验)",
-      "componentName": "PieChart",
-      "icon": "https://unpkg.alibaba-inc.com/@ali/vc-bizcharts@1.1.4/src/vc-PieChart/logo.svg",
-      "npm": {
-        "package": "bizcharts",
-        "version": "4.0.14",
-        "exportName": "PieChart",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "configure": {
-        "props": [
-          {
-            "name": "angleField",
-            "title": "占比字段",
-            "tip": "扇形切片大小（弧度）所对应的数据字段名",
-            "setter": "StringSetter"
-          },
-          {
-            "name": "colorField",
-            "title": "颜色字段",
-            "tip": "扇形颜色映射对应的数据字段名",
-            "setter": "StringSetter"
-          },
-          {
-            "name": "titleConfig",
-            "title": "标题配置",
-            "display": "block",
-            "type": "group",
-            "items": [
-              {
-                "name": "title.text",
-                "title": "标题",
-                "setter": "StringSetter"
-              },
-              {
-                "name": "title.visible",
-                "title": "是否展示",
-                "setter": "BoolSetter"
-              }
-            ]
-          },
-          {
-            "name": "descriptionConfig",
-            "title": "描述配置",
-            "display": "block",
-            "type": "group",
-            "items": [
-              {
-                "name": "description.text",
-                "title": "描述",
-                "setter": "StringSetter"
-              },
-              {
-                "name": "description.visible",
-                "title": "是否展示",
-                "setter": "BoolSetter"
-              }
-            ]
-          },
-          {
-            "name": "data",
-            "title": "图表数据",
-            "tip": "配置图表数据",
-            "setter": "JsonSetter"
-          }
-        ],
-        "supports": {
-          "style": true
-        }
-      }
     },
     {
       "componentName": "PopupItem",
@@ -11693,7 +11820,10 @@
           "name": "shape",
           "propType": {
             "type": "oneOf",
-            "value": ["circle", "line"]
+            "value": [
+              "circle",
+              "line"
+            ]
           },
           "description": "形态",
           "defaultValue": "line"
@@ -11702,7 +11832,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -11719,7 +11853,11 @@
           "title": "进度状态",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "success", "error"]
+            "value": [
+              "normal",
+              "success",
+              "error"
+            ]
           },
           "description": "进度状态, 显示优先级: color > progressive > state",
           "defaultValue": "normal"
@@ -11858,7 +11996,12 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -11898,7 +12041,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["large", "medium", "small"]
+            "value": [
+              "large",
+              "medium",
+              "small"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -11907,7 +12054,10 @@
           "name": "shape",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "button"]
+            "value": [
+              "normal",
+              "button"
+            ]
           },
           "description": "展示形态"
         },
@@ -11915,7 +12065,11 @@
           "name": "value",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "number", "bool"]
+            "value": [
+              "string",
+              "number",
+              "bool"
+            ]
           },
           "description": "选中项的值"
         },
@@ -11923,7 +12077,11 @@
           "name": "defaultValue",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "number", "bool"]
+            "value": [
+              "string",
+              "number",
+              "bool"
+            ]
           },
           "description": "默认值"
         },
@@ -11947,7 +12105,10 @@
           "name": "itemDirection",
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "子项目的排列方式",
           "defaultValue": "hoz"
@@ -11997,7 +12158,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -12035,7 +12199,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["StringSetter", "ExpressionSetter"]
+                "setters": [
+                  "StringSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -12122,7 +12289,9 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onChange"]
+          "events": [
+            "onChange"
+          ]
         }
       },
       "icon": "",
@@ -12186,7 +12355,11 @@
           "name": "value",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "number", "bool"]
+            "value": [
+              "string",
+              "number",
+              "bool"
+            ]
           },
           "description": "value"
         },
@@ -12393,7 +12566,11 @@
           "name": "type",
           "propType": {
             "type": "oneOf",
-            "value": ["date", "month", "year"]
+            "value": [
+              "date",
+              "month",
+              "year"
+            ]
           },
           "description": "日期范围类型",
           "defaultValue": "date"
@@ -12464,7 +12641,11 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["error", "loading", "success"]
+            "value": [
+              "error",
+              "loading",
+              "success"
+            ]
           },
           "description": "输入框状态"
         },
@@ -12472,7 +12653,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "输入框尺寸",
           "defaultValue": "medium"
@@ -12508,7 +12693,10 @@
           "name": "popupTriggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "弹层触发方式",
           "defaultValue": "click"
@@ -12587,7 +12775,12 @@
       "configure": {
         "supports": {
           "style": true,
-          "events": ["onVisibleMonthChange", "onChange", "onOk", "onVisibleChange"]
+          "events": [
+            "onVisibleMonthChange",
+            "onChange",
+            "onOk",
+            "onVisibleChange"
+          ]
         },
         "props": [
           {
@@ -12622,7 +12815,11 @@
             "setter": {
               "setter": "RadioGroupSetter",
               "props": {
-                "options": ["date", "month", "year"]
+                "options": [
+                  "date",
+                  "month",
+                  "year"
+                ]
               }
             },
             "description": "日期范围类型",
@@ -12640,7 +12837,11 @@
             "setter": {
               "setter": "RadioGroupSetter",
               "props": {
-                "options": ["error", "loading", "success"]
+                "options": [
+                  "error",
+                  "loading",
+                  "success"
+                ]
               }
             },
             "description": "输入框状态"
@@ -12651,7 +12852,11 @@
             "setter": {
               "setter": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "description": "输入框尺寸",
@@ -12764,7 +12969,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["single", "double"]
+            "value": [
+              "single",
+              "double"
+            ]
           },
           "description": "滑块个数\n@enumdesc 单个, 两个",
           "defaultValue": "single"
@@ -12805,7 +13013,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["above", "below"]
+            "value": [
+              "above",
+              "below"
+            ]
           },
           "description": "marks显示在上方('above')or下方('below')",
           "defaultValue": "above"
@@ -12876,12 +13087,18 @@
           {
             "name": "value",
             "title": "当前值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "defaultValue",
             "title": "默认值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "min",
@@ -12920,7 +13137,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["single", "double"]
+                "options": [
+                  "single",
+                  "double"
+                ]
               }
             },
             "description": "滑块个数\n@enumdesc 单个, 两个",
@@ -12935,7 +13155,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["above", "below"]
+                "options": [
+                  "above",
+                  "below"
+                ]
               }
             },
             "description": "marks显示在上方('above')or下方('below')",
@@ -13080,7 +13303,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -13146,12 +13373,18 @@
           {
             "name": "value",
             "title": "当前值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "defaultValue",
             "title": "默认值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "size",
@@ -13170,7 +13403,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -13178,17 +13415,26 @@
           {
             "name": "count",
             "title": "评分总数",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "allowHalf",
             "title": "半星评分",
-            "setter": ["BoolSetter", "ExpressionSetter"]
+            "setter": [
+              "BoolSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "showGrade",
             "title": "显示分数",
-            "setter": ["BoolSetter", "ExpressionSetter"]
+            "setter": [
+              "BoolSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "readAs",
@@ -13245,7 +13491,10 @@
           }
         ],
         "supports": {
-          "events": ["onChange", "onHoverChange"]
+          "events": [
+            "onChange",
+            "onHoverChange"
+          ]
         }
       },
       "icon": "",
@@ -13326,7 +13575,11 @@
           "name": "device",
           "propType": {
             "type": "oneOf",
-            "value": ["phone", "tablet", "desktop"]
+            "value": [
+              "phone",
+              "tablet",
+              "desktop"
+            ]
           },
           "description": "设备，用来做自适应，默认为PC",
           "defaultValue": "desktop"
@@ -13378,7 +13631,10 @@
                   {
                     "componentName": "JsonSetter",
                     "props": {
-                      "defaultValue": [8, 4]
+                      "defaultValue": [
+                        8,
+                        4
+                      ]
                     }
                   },
                   "ExpressionSetter"
@@ -13393,7 +13649,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -13407,75 +13666,6 @@
       },
       "icon": "",
       "category": "容器"
-    },
-    {
-      "componentName": "RichText",
-      "title": "需求占位",
-      "npm": {
-        "package": "@alifd/ali-lowcode-components",
-        "version": "latest",
-        "exportName": "RichText",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "props": [
-        {
-          "name": "style",
-          "propType": "object"
-        }
-      ],
-      "configure": {
-        "props": {
-          "override": [
-            {
-              "name": "style",
-              "propType": "object"
-            },
-            {
-              "name": "maxHeight",
-              "title": "最大高度",
-              "propType": "number",
-              "setter": "NumberSetter",
-              "description": "最大高度"
-            },
-            {
-              "name": "content",
-              "title": "需求内容",
-              "display": "inline",
-              "supportVariable": true,
-              "setter": {
-                "componentName": "EditSetter",
-                "props": {
-                  "title": "点击编辑需求内容"
-                }
-              }
-            }
-          ]
-        },
-        "advanced": {
-          "getResizingHandlers": {
-            "type": "JSFunction",
-            "value": "() => {\n      return [\"e\"];\n    }"
-          },
-          "callbacks": {
-            "onResizeStart": {
-              "type": "JSFunction",
-              "value": "(e, currentNode) => {\n        const parent = currentNode.getParent();\n        if (parent) {\n          const parentNode = parent.getDOMNode();\n          if (parentNode) {\n            currentNode.parentRect = parentNode.getBoundingClientRect();\n          }\n        }\n        currentNode.beforeSpan = currentNode.getPropValue(\"colSpan\") || 12;\n        currentNode.startRect = currentNode.getRect();\n      }"
-            },
-            "onResize": {
-              "type": "JSFunction",
-              "value": "(e, currentNode) => {\n        const { deltaX } = e;\n        const startWidth = currentNode.startRect\n          ? currentNode.startRect.width\n          : currentNode.beforeSpan * (currentNode.parentRect.width / 12);\n        let width = startWidth + deltaX;\n        if (!currentNode.startRect) {\n          currentNode.startRect = {\n            width\n          };\n        }\n        width = Math.max(0, width); \n        width = Math.min(width, currentNode.parentRect.width); \n        currentNode.getDOMNode().style[\"width\"] = `${Math.round(width)}px`;\n      }"
-            },
-            "onResizeEnd": {
-              "type": "JSFunction",
-              "value": "(e, currentNode) => {\n        currentNode.setPropValue(\"style.width\", currentNode.getDOMNode().style[\"width\"]);\n      }"
-            }
-          }
-        }
-      },
-      "icon": "https://img.alicdn.com/imgextra/i3/O1CN01G7Lc8e1pZL7p4cdKc_!!6000000005374-2-tps-112-112.png",
-      "category": "常用"
     },
     {
       "componentName": "Search",
@@ -13493,7 +13683,11 @@
       "configure": {
         "supports": {
           "style": true,
-          "events": ["onChange", "onSearch", "onFilterChange"]
+          "events": [
+            "onChange",
+            "onSearch",
+            "onFilterChange"
+          ]
         },
         "props": [
           {
@@ -13547,7 +13741,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["normal", "simple"]
+                "options": [
+                  "normal",
+                  "simple"
+                ]
               }
             },
             "description": "形状",
@@ -13562,7 +13759,12 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["primary", "secondary", "normal", "dark"]
+                "options": [
+                  "primary",
+                  "secondary",
+                  "normal",
+                  "dark"
+                ]
               }
             },
             "description": "类型 shape=normal: primary/secondary; shape=simple: normal/dark;",
@@ -13599,7 +13801,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["JsonSetter", "ExpressionSetter"]
+                "setters": [
+                  "JsonSetter",
+                  "ExpressionSetter"
+                ]
               }
             }
           },
@@ -13699,7 +13904,11 @@
           "name": "mode",
           "propType": {
             "type": "oneOf",
-            "value": ["single", "multiple", "tag"]
+            "value": [
+              "single",
+              "multiple",
+              "tag"
+            ]
           },
           "description": "选择器模式"
         },
@@ -13962,7 +14171,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "bool"]
+            "value": [
+              "string",
+              "bool"
+            ]
           },
           "description": "动效类型，默认是'slide'",
           "defaultValue": "slide"
@@ -13985,7 +14197,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["medium", "large"]
+            "value": [
+              "medium",
+              "large"
+            ]
           },
           "description": "导航箭头大小 可选值: 'medium', 'large'",
           "defaultValue": "medium"
@@ -13998,7 +14213,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["inner", "outer"]
+            "value": [
+              "inner",
+              "outer"
+            ]
           },
           "description": "导航箭头位置 可选值: 'inner', 'outer'",
           "defaultValue": "inner"
@@ -14011,7 +14229,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "导航箭头的方向 可选值: 'hoz', 'ver'",
           "defaultValue": "hoz"
@@ -14076,7 +14297,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "导航锚点位置",
           "defaultValue": "hoz"
@@ -14129,7 +14353,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "轮播方向",
           "defaultValue": "hoz"
@@ -14142,7 +14369,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "锚点导航触发方式",
           "defaultValue": "click"
@@ -14236,7 +14466,11 @@
           "title": "按钮类型",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "primary", "secondary"]
+            "value": [
+              "normal",
+              "primary",
+              "secondary"
+            ]
           },
           "description": "按钮的类型",
           "defaultValue": "normal"
@@ -14246,7 +14480,11 @@
           "title": "按钮尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "按钮组的尺寸",
           "defaultValue": "medium"
@@ -14256,7 +14494,10 @@
           "title": "标签类型",
           "propType": {
             "type": "oneOf",
-            "value": ["button", "a"]
+            "value": [
+              "button",
+              "a"
+            ]
           },
           "defaultValue": "button",
           "description": "设置标签类型"
@@ -14266,7 +14507,12 @@
           "title": "幽灵按钮",
           "propType": {
             "type": "oneOf",
-            "value": ["light", "dark", false, true]
+            "value": [
+              "light",
+              "dark",
+              false,
+              true
+            ]
           },
           "description": "是否为幽灵按钮"
         },
@@ -14292,7 +14538,10 @@
           "title": "单选多选",
           "propType": {
             "type": "oneOf",
-            "value": ["single", "multiple"]
+            "value": [
+              "single",
+              "multiple"
+            ]
           },
           "defaultValue": "single",
           "description": "菜单的选择模式"
@@ -14322,7 +14571,10 @@
           "title": "弹层触发",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "弹层的触发方式",
           "defaultValue": "click"
@@ -14476,7 +14728,12 @@
               "setter": {
                 "componentName": "RadioGroupSetter",
                 "props": {
-                  "options": ["light", "dark", false, true]
+                  "options": [
+                    "light",
+                    "dark",
+                    false,
+                    true
+                  ]
                 }
               },
               "defaultValue": false
@@ -14545,7 +14802,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["wait", "process", "finish"]
+            "value": [
+              "wait",
+              "process",
+              "finish"
+            ]
           },
           "description": "步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`"
         },
@@ -14667,7 +14928,10 @@
           "name": "direction",
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "展示方向",
           "defaultValue": "hoz"
@@ -14676,7 +14940,10 @@
           "name": "labelPlacement",
           "propType": {
             "type": "oneOf",
-            "value": ["hoz", "ver"]
+            "value": [
+              "hoz",
+              "ver"
+            ]
           },
           "description": "横向布局时( direction 为 hoz )的内容排列",
           "defaultValue": "ver"
@@ -14685,7 +14952,11 @@
           "name": "shape",
           "propType": {
             "type": "oneOf",
-            "value": ["circle", "arrow", "dot"]
+            "value": [
+              "circle",
+              "arrow",
+              "dot"
+            ]
           },
           "description": "类型",
           "defaultValue": "circle"
@@ -14744,7 +15015,11 @@
                           "setter": {
                             "componentName": "RadioGroupSetter",
                             "props": {
-                              "options": ["wait", "process", "finish"]
+                              "options": [
+                                "wait",
+                                "process",
+                                "finish"
+                              ]
                             }
                           },
                           "description": "步骤的状态，如不传，会根据外层的 Step 的 current 属性生成，可选值为 `wait`, `process`, `finish`"
@@ -14805,7 +15080,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["hoz", "ver"]
+                "options": [
+                  "hoz",
+                  "ver"
+                ]
               }
             },
             "title": "展示方向",
@@ -14816,7 +15094,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["hoz", "ver"]
+                "options": [
+                  "hoz",
+                  "ver"
+                ]
               }
             },
             "title": "内容排列",
@@ -14827,7 +15108,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["circle", "arrow", "dot"]
+                "options": [
+                  "circle",
+                  "arrow",
+                  "dot"
+                ]
               }
             },
             "title": "类型",
@@ -14883,7 +15168,10 @@
           "name": "mode",
           "propType": {
             "type": "oneOf",
-            "value": ["inline", "popup"]
+            "value": [
+              "inline",
+              "popup"
+            ]
           },
           "description": "子菜单打开方式，如果设置会覆盖 Menu 上的同名属性\n@default Menu 的 mode 属性值"
         },
@@ -14896,7 +15184,12 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Menu", "SubMenu", "Menu.Group", "MenuButton"]
+            "parentWhitelist": [
+              "Menu",
+              "SubMenu",
+              "Menu.Group",
+              "MenuButton"
+            ]
           }
         }
       },
@@ -15013,7 +15306,10 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["medium", "small"]
+            "value": [
+              "medium",
+              "small"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -15097,7 +15393,10 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["medium", "small"]
+                "options": [
+                  "medium",
+                  "small"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -15177,7 +15476,11 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onChange", "onClick", "onKeyDown"]
+          "events": [
+            "onChange",
+            "onClick",
+            "onKeyDown"
+          ]
         }
       },
       "icon": "",
@@ -15232,7 +15535,9 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "parentWhitelist": ["Tab"]
+            "parentWhitelist": [
+              "Tab"
+            ]
           }
         }
       },
@@ -15311,14 +15616,23 @@
           "name": "device",
           "propType": {
             "type": "oneOf",
-            "value": ["tablet", "desktop", "phone"]
+            "value": [
+              "tablet",
+              "desktop",
+              "phone"
+            ]
           }
         },
         {
           "name": "shape",
           "propType": {
             "type": "oneOf",
-            "value": ["pure", "wrapped", "text", "capsule"]
+            "value": [
+              "pure",
+              "wrapped",
+              "text",
+              "capsule"
+            ]
           },
           "description": "外观形态",
           "defaultValue": "pure"
@@ -15333,7 +15647,10 @@
           "name": "excessMode",
           "propType": {
             "type": "oneOf",
-            "value": ["slide", "dropdown"]
+            "value": [
+              "slide",
+              "dropdown"
+            ]
           },
           "description": "选项卡过多时的滑动模式",
           "defaultValue": "slide"
@@ -15342,7 +15659,12 @@
           "name": "tabPosition",
           "propType": {
             "type": "oneOf",
-            "value": ["top", "bottom", "left", "right"]
+            "value": [
+              "top",
+              "bottom",
+              "left",
+              "right"
+            ]
           },
           "description": "导航选项卡的位置，只适用于包裹型（wrapped）选项卡",
           "defaultValue": "top"
@@ -15351,7 +15673,10 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium"]
+            "value": [
+              "small",
+              "medium"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -15360,7 +15685,10 @@
           "name": "triggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["hover", "click"]
+            "value": [
+              "hover",
+              "click"
+            ]
           },
           "description": "激活选项卡的触发方式",
           "defaultValue": "click"
@@ -15617,7 +15945,11 @@
           }
         ],
         "supports": {
-          "events": ["onClick", "onChange", "onClose"]
+          "events": [
+            "onClick",
+            "onChange",
+            "onClose"
+          ]
         },
         "advanced": {
           "initialChildren": [
@@ -15719,7 +16051,10 @@
           "name": "tableLayout",
           "propType": {
             "type": "oneOf",
-            "value": ["fixed", "auto"]
+            "value": [
+              "fixed",
+              "auto"
+            ]
           }
         },
         {
@@ -15738,7 +16073,10 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium"]
+            "value": [
+              "small",
+              "medium"
+            ]
           }
         },
         {
@@ -15837,7 +16175,10 @@
           "name": "lockType",
           "propType": {
             "type": "oneOf",
-            "value": ["left", "right"]
+            "value": [
+              "left",
+              "right"
+            ]
           }
         },
         {
@@ -16029,7 +16370,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["tag", "tail"]
+            "value": [
+              "tag",
+              "tail"
+            ]
           },
           "description": "closeable 标签的 onClose 响应区域, tag: 标签体, tail(默认): 关闭按钮"
         },
@@ -16049,7 +16393,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "标签的尺寸（large 尺寸为兼容表单场景 large = medium）"
         },
@@ -16219,7 +16567,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "primary"]
+            "value": [
+              "normal",
+              "primary"
+            ]
           },
           "description": "标签的类型"
         },
@@ -16239,7 +16590,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "标签的尺寸（large 尺寸为兼容表单场景 large = medium）"
         },
@@ -16367,7 +16722,10 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["error", "success"]
+            "value": [
+              "error",
+              "success"
+            ]
           },
           "description": "输入框状态"
         },
@@ -16396,7 +16754,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "时间选择框的尺寸",
           "defaultValue": "medium"
@@ -16478,7 +16840,10 @@
           {
             "name": "defaultValue",
             "title": "默认值",
-            "setter": ["TimePicker", "ExpressionSetter"]
+            "setter": [
+              "TimePicker",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "size",
@@ -16497,7 +16862,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["small", "medium", "large"]
+                "options": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
               }
             },
             "defaultValue": "medium"
@@ -16538,25 +16907,37 @@
             "name": "hourStep",
             "title": "小时步长",
             "defaultValue": 1,
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "minuteStep",
             "title": "分钟步长",
             "defaultValue": 1,
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "secondStep",
             "title": "秒钟步长",
             "defaultValue": 1,
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "hasClear",
             "title": "清除按钮",
             "defaultValue": true,
-            "setter": ["BoolSetter", "ExpressionSetter"]
+            "setter": [
+              "BoolSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "disabledHours",
@@ -16629,7 +17010,10 @@
           }
         ],
         "supports": {
-          "events": ["onChange", "onVisibleChange"]
+          "events": [
+            "onChange",
+            "onVisibleChange"
+          ]
         }
       },
       "icon": "",
@@ -16653,7 +17037,12 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["done", "process", "error", "success"]
+            "value": [
+              "done",
+              "process",
+              "error",
+              "success"
+            ]
           },
           "description": "节点状态",
           "defaultValue": "done"
@@ -16677,7 +17066,10 @@
           "name": "title",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "标题"
         },
@@ -16690,7 +17082,10 @@
           "name": "content",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "右侧内容"
         },
@@ -16709,7 +17104,9 @@
         "component": {
           "isContainer": false,
           "nestingRule": {
-            "parentWhitelist": ["Timeline"]
+            "parentWhitelist": [
+              "Timeline"
+            ]
           }
         },
         "props": [
@@ -16729,7 +17126,12 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["done", "process", "error", "success"]
+                "options": [
+                  "done",
+                  "process",
+                  "error",
+                  "success"
+                ]
               }
             },
             "title": "节点状态",
@@ -16808,7 +17210,9 @@
         "component": {
           "isContainer": true,
           "nestingRule": {
-            "childWhitelist": ["Timeline.Item"]
+            "childWhitelist": [
+              "Timeline.Item"
+            ]
           }
         },
         "props": [
@@ -16839,7 +17243,12 @@
                           "setter": {
                             "componentName": "RadioGroupSetter",
                             "props": {
-                              "options": ["done", "process", "error", "success"]
+                              "options": [
+                                "done",
+                                "process",
+                                "error",
+                                "success"
+                              ]
                             }
                           },
                           "title": "节点状态",
@@ -16948,7 +17357,14 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["success", "warning", "error", "notice", "help", "loading"]
+            "value": [
+              "success",
+              "warning",
+              "error",
+              "notice",
+              "help",
+              "loading"
+            ]
           },
           "description": "反馈类型",
           "defaultValue": "success"
@@ -16969,7 +17385,11 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["inline", "addon", "toast"]
+            "value": [
+              "inline",
+              "addon",
+              "toast"
+            ]
           },
           "description": "外观",
           "defaultValue": "inline"
@@ -16990,7 +17410,10 @@
           },
           "propType": {
             "type": "oneOf",
-            "value": ["medium", "large"]
+            "value": [
+              "medium",
+              "large"
+            ]
           },
           "description": "尺寸",
           "defaultValue": "medium"
@@ -17011,7 +17434,10 @@
           },
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "内容"
         },
@@ -17151,7 +17577,20 @@
           "name": "align",
           "propType": {
             "type": "oneOf",
-            "value": ["t", "r", "b", "l", "tl", "tr", "bl", "br", "lt", "lb", "rt", "rb"]
+            "value": [
+              "t",
+              "r",
+              "b",
+              "l",
+              "tl",
+              "tr",
+              "bl",
+              "br",
+              "lt",
+              "lb",
+              "rt",
+              "rb"
+            ]
           },
           "description": "弹出层位置\n@enumdesc 上, 右, 下, 左, 上左, 上右, 下左, 下右, 左上, 左下, 右上, 右下 及其 两两组合",
           "defaultValue": "b"
@@ -17165,7 +17604,10 @@
           "name": "triggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["hover", "click"]
+            "value": [
+              "hover",
+              "click"
+            ]
           },
           "description": "触发行为\n鼠标悬浮,  鼠标点击('hover', 'click')或者它们组成的数组，如 ['hover', 'click'], 强烈不建议使用'focus'，若有复杂交互，推荐使用triggerType为click的Balloon组件",
           "defaultValue": "hover"
@@ -17249,7 +17691,10 @@
           "name": "mode",
           "propType": {
             "type": "oneOf",
-            "value": ["normal", "simple"]
+            "value": [
+              "normal",
+              "simple"
+            ]
           },
           "description": "移动选项模式",
           "defaultValue": "normal"
@@ -17379,12 +17824,18 @@
           {
             "name": "value",
             "title": "当前值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "defaultValue",
             "title": "默认值",
-            "setter": ["NumberSetter", "ExpressionSetter"]
+            "setter": [
+              "NumberSetter",
+              "ExpressionSetter"
+            ]
           },
           {
             "name": "mode",
@@ -17420,7 +17871,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             },
             "defaultValue": true
@@ -17431,7 +17885,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             },
             "defaultValue": false
@@ -17443,7 +17900,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["StringSetter", "ExpressionSetter"]
+                "setters": [
+                  "StringSetter",
+                  "ExpressionSetter"
+                ]
               }
             },
             "condition": {
@@ -17469,7 +17929,10 @@
             "setter": {
               "componentName": "MixedSetter",
               "props": {
-                "setters": ["BoolSetter", "ExpressionSetter"]
+                "setters": [
+                  "BoolSetter",
+                  "ExpressionSetter"
+                ]
               }
             },
             "defaultValue": false
@@ -17522,7 +17985,9 @@
                 ]
               }
             },
-            "defaultValue": ["1"]
+            "defaultValue": [
+              "1"
+            ]
           },
           {
             "name": "defaultRightChecked",
@@ -17539,7 +18004,9 @@
                 ]
               }
             },
-            "defaultValue": ["1"]
+            "defaultValue": [
+              "1"
+            ]
           },
           {
             "name": "titles",
@@ -17556,7 +18023,10 @@
                 ]
               }
             },
-            "defaultValue": ["TitleLeft", "TitleRight"]
+            "defaultValue": [
+              "TitleLeft",
+              "TitleRight"
+            ]
           },
           {
             "name": "notFountContent",
@@ -17573,7 +18043,9 @@
                 ]
               }
             },
-            "defaultValue": ["无数据"]
+            "defaultValue": [
+              "无数据"
+            ]
           },
           {
             "name": "itemRender",
@@ -17630,7 +18102,11 @@
           }
         ],
         "supports": {
-          "events": ["onChange", "onSearch", "onSort"]
+          "events": [
+            "onChange",
+            "onSearch",
+            "onSort"
+          ]
         }
       },
       "icon": "",
@@ -17666,7 +18142,10 @@
           "name": "label",
           "propType": {
             "type": "oneOfType",
-            "value": ["string", "node"]
+            "value": [
+              "string",
+              "node"
+            ]
           },
           "description": "节点文本内容",
           "defaultValue": "---"
@@ -17743,7 +18222,11 @@
           "title": "尺寸",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "选择框大小",
           "defaultValue": "medium"
@@ -17853,7 +18336,11 @@
           "name": "treeCheckedStrategy",
           "propType": {
             "type": "oneOf",
-            "value": ["all", "parent", "child"]
+            "value": [
+              "all",
+              "parent",
+              "child"
+            ]
           },
           "description": "定义选中时回填的方式\n@enumdesc 返回所有选中的节点, 父子节点都选中时只返回父节点, 父子节点都选中时只返回子节点",
           "defaultValue": "parent"
@@ -18136,7 +18623,11 @@
           "name": "checkedStrategy",
           "propType": {
             "type": "oneOf",
-            "value": ["all", "parent", "child"]
+            "value": [
+              "all",
+              "parent",
+              "child"
+            ]
           },
           "description": "定义选中时回填的方式\n@enumdesc 返回所有选中的节点, 父子节点都选中时只返回父节点, 父子节点都选中时只返回子节点",
           "defaultValue": "all"
@@ -18354,7 +18845,11 @@
         ],
         "supports": {
           "style": true,
-          "events": ["onSelect", "onCheck", "onExpand"]
+          "events": [
+            "onSelect",
+            "onCheck",
+            "onExpand"
+          ]
         },
         "advanced": {
           "initials": [
@@ -18451,7 +18946,13 @@
           "name": "component",
           "propType": {
             "type": "oneOf",
-            "value": ["span", "h1", "h2", "h3", "h4"]
+            "value": [
+              "span",
+              "h1",
+              "h2",
+              "h3",
+              "h4"
+            ]
           },
           "description": "设置标签类型",
           "defaultValue": "span"
@@ -18625,7 +19126,11 @@
           "name": "listType",
           "propType": {
             "type": "oneOf",
-            "value": ["text", "image", "card"]
+            "value": [
+              "text",
+              "image",
+              "card"
+            ]
           },
           "description": "文件列表，数据格式请参考 文件对象",
           "defaultValue": "text"
@@ -18819,7 +19324,9 @@
           "name": "shape",
           "propType": {
             "type": "oneOf",
-            "value": ["card"]
+            "value": [
+              "card"
+            ]
           },
           "description": "上传按钮形状"
         },
@@ -18827,7 +19334,11 @@
           "name": "listType",
           "propType": {
             "type": "oneOf",
-            "value": ["text", "image", "card"]
+            "value": [
+              "text",
+              "image",
+              "card"
+            ]
           },
           "description": "上传列表的样式"
         },
@@ -18840,7 +19351,10 @@
           "name": "data",
           "propType": {
             "type": "oneOfType",
-            "value": ["object", "func"]
+            "value": [
+              "object",
+              "func"
+            ]
           },
           "description": "上传额外传参"
         },
@@ -19008,7 +19522,11 @@
             "setter": {
               "componentName": "RadioGroupSetter",
               "props": {
-                "options": ["text", "image", "card"]
+                "options": [
+                  "text",
+                  "image",
+                  "card"
+                ]
               }
             },
             "defaultValue": "text",
@@ -19087,132 +19605,6 @@
       "category": "内容"
     },
     {
-      "componentName": "Video",
-      "title": "视频",
-      "npm": {
-        "package": "@alifd/ali-lowcode-components",
-        "version": "latest",
-        "exportName": "Video",
-        "main": "",
-        "destructuring": true,
-        "subName": ""
-      },
-      "props": [
-        {
-          "name": "src",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "视频链接",
-              "en-US": "Video Address"
-            },
-            "tip": {
-              "type": "i18n",
-              "zh-CN": "属性: src | 说明: 视频链接",
-              "en-US": "prop: src | description: Video address"
-            }
-          },
-          "propType": "string",
-          "defaultValue": "https://fusion.alicdn.com/fusion-site-2.0/fusion.mp4"
-        },
-        {
-          "name": "autoPlay",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "自动播放",
-              "en-US": "autoPlay"
-            }
-          },
-          "propType": "bool",
-          "setter": {
-            "componentName": "BoolSetter"
-          }
-        },
-        {
-          "name": "loop",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "循环播放",
-              "en-US": "loop"
-            }
-          },
-          "propType": "bool"
-        },
-        {
-          "name": "muted",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "静音",
-              "en-US": "muted"
-            }
-          },
-          "propType": "bool"
-        },
-        {
-          "name": "controls",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "控制条",
-              "en-US": "controls"
-            }
-          },
-          "propType": "bool"
-        },
-        {
-          "name": "poster",
-          "title": {
-            "label": {
-              "type": "i18n",
-              "zh-CN": "默认图URL",
-              "en-US": "poster"
-            }
-          },
-          "propType": "string"
-        },
-        {
-          "name": "style",
-          "propType": "object"
-        }
-      ],
-      "configure": {
-        "props": {
-          "isExtends": true,
-          "override": [
-            {
-              "name": "autoPlay",
-              "title": "自动播放",
-              "setter": {
-                "componentName": "BoolSetter"
-              },
-              "extraProps": {
-                "setValue": {
-                  "type": "JSFunction",
-                  "value": "(target, value) => {\n              if (value) {\n                target.getNode().setPropValue(\"muted\", true);\n              }\n            }"
-                }
-              }
-            },
-            {
-              "name": "muted",
-              "title": "静音",
-              "setter": {
-                "componentName": "BoolSetter"
-              },
-              "condition": {
-                "type": "JSFunction",
-                "value": "target => {\n            return !target.getProps().getPropValue(\"autoPlay\");\n          }"
-              }
-            }
-          ]
-        }
-      },
-      "icon": "",
-      "category": "内容"
-    },
-    {
       "componentName": "WeekPicker",
       "title": "WeekPicker",
       "docUrl": "",
@@ -19248,7 +19640,11 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["success", "loading", "error"]
+            "value": [
+              "success",
+              "loading",
+              "error"
+            ]
           },
           "description": "输入框状态"
         },
@@ -19307,7 +19703,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "输入框尺寸",
           "defaultValue": "medium"
@@ -19343,7 +19743,10 @@
           "name": "popupTriggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "弹层触发方式",
           "defaultValue": "click"
@@ -19477,7 +19880,11 @@
           "name": "state",
           "propType": {
             "type": "oneOf",
-            "value": ["success", "loading", "error"]
+            "value": [
+              "success",
+              "loading",
+              "error"
+            ]
           },
           "description": "输入框状态"
         },
@@ -19527,7 +19934,11 @@
           "name": "size",
           "propType": {
             "type": "oneOf",
-            "value": ["small", "medium", "large"]
+            "value": [
+              "small",
+              "medium",
+              "large"
+            ]
           },
           "description": "输入框尺寸",
           "defaultValue": "medium"
@@ -19562,7 +19973,10 @@
           "name": "popupTriggerType",
           "propType": {
             "type": "oneOf",
-            "value": ["click", "hover"]
+            "value": [
+              "click",
+              "hover"
+            ]
           },
           "description": "弹层触发方式",
           "defaultValue": "click"
@@ -19793,7 +20207,6 @@
             }
           ]
         },
-
         {
           "componentName": "RichText",
           "library": "Next",
@@ -19838,7 +20251,10 @@
                   "type": "normal",
                   "closable": true,
                   "align": "b",
-                  "offset": [0, 0],
+                  "offset": [
+                    0,
+                    0
+                  ],
                   "triggerType": "hover",
                   "autoFocus": true,
                   "trigger": {
@@ -19868,7 +20284,10 @@
                   "footerAlign": "right",
                   "title": "Title",
                   "footer": true,
-                  "footerActions": ["ok", "cancel"],
+                  "footerActions": [
+                    "ok",
+                    "cancel"
+                  ],
                   "closeable": "esc,close",
                   "hasMask": true,
                   "align": "cc cc",
@@ -20183,7 +20602,10 @@
                   "type": "normal",
                   "closable": true,
                   "align": "b",
-                  "offset": [0, 0],
+                  "offset": [
+                    0,
+                    0
+                  ],
                   "triggerType": "hover",
                   "autoFocus": true,
                   "trigger": {

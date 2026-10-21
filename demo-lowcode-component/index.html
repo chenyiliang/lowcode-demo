@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>阿里低代码引擎 Demo - 低代码组件</title>
+    <link rel="icon" href="/favicon.png" />
+    <!--
+      React / ReactDOM / PropTypes / lodash / moment / Fusion Next / 低代码引擎及其扩展
+      原先都从这里用 CDN <script> 引入，并在 build.json 里配成 externals。
+      迁移到 Vite 后全部改成 npm 依赖参与打包，本文件不再有任何外链脚本与外链样式：
+        · 样式      -> src/styles.ts
+        · iframe 全局 -> src/simulator-env.ts
+        · 版本横幅   -> src/banner.ts
+    -->
+  </head>
+
+  <body>
+    <div id="lce-container"></div>
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>

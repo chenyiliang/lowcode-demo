@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>阿里低代码引擎 Demo - 预览页</title>
+    <link rel="icon" href="/favicon.png" />
+    <!--
+      原先 next.min.css 走 g.alicdn.com，react/react-dom/prop-types/lodash/moment/next
+      也全是 CDN <script>。迁移后样式由 src/preview-styles.ts 以 npm 包引入，
+      脚本由 Vite 打包，不再有外链。
+    -->
+  </head>
+  <body>
+    <div id="ice-container"></div>
+    <script>
+      window.g_config = {
+        locale: 'zh-CN',
+      };
+    </script>
+    <script type="module" src="/src/preview.tsx"></script>
+  </body>
+</html>

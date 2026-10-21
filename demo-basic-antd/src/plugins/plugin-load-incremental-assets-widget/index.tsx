@@ -9,9 +9,10 @@ const loadIncrementalAssets = () => {
   });
 
   material.loadIncrementalAssets({
+    // IPublicTypeAssetsJson 要求顶层 version（资产包协议版本号）
+    version: '1.0.0',
     packages: [
       {
-        title: 'MCBreadcrumb',
         package: 'mc-breadcrumb',
         version: '1.0.0',
         urls: [
@@ -54,10 +55,7 @@ const loadIncrementalAssets = () => {
           },
           {
             name: 'children',
-            propType: {
-              type: 'instanceOf',
-              value: 'node',
-            },
+            propType: 'node',
             description: '面包屑子节点，需传入 Breadcrumb.Item',
           },
           {
@@ -78,10 +76,7 @@ const loadIncrementalAssets = () => {
           },
           {
             name: 'separator',
-            propType: {
-              type: 'instanceOf',
-              value: 'node',
-            },
+            propType: 'node',
             description: '分隔符，可以是文本或 Icon',
           },
           {
@@ -105,7 +100,6 @@ const loadIncrementalAssets = () => {
         configure: {
           component: {
             isContainer: true,
-            isModel: true,
             rootSelector: 'div.MCBreadcrumb',
           },
         },

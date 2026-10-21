@@ -5,10 +5,10 @@ import {
 } from '../../services/mockService';
 
 // 保存功能示例
-const ResetPlugin = (ctx: IPublicModelPluginContext) => {
+const ResetPlugin = (ctx: IPublicModelPluginContext, options: { id: string }) => {
   return {
     async init() {
-      const { skeleton, hotkey, config, workspace } = ctx;
+      const { skeleton, config } = ctx;
       const scenarioName = config.get('scenarioName');
 
       skeleton.add({
@@ -19,7 +19,9 @@ const ResetPlugin = (ctx: IPublicModelPluginContext) => {
           align: 'right',
         },
         content: (
-          <Button onClick={() => resetSchema(scenarioName)}>
+          // workspace 模式下 localStorage 的 key 需要 scenarioName + 资源 id，
+          // 所以这里把当前窗口的 id 和插件上下文一并透传给 resetSchema。
+          <Button onClick={() => resetSchema(scenarioName, options.id, ctx)}>
             重置页面
           </Button>
         ),

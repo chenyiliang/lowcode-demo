@@ -77,7 +77,12 @@ const setPackagesToLocalStorage = async (scenarioName: string) => {
     console.error('scenarioName is required!');
     return;
   }
-  const packages = await filterPackages(material.getAssets().packages);
+  // material.getAssets() 可能为 undefined（引擎尚未 setAssets 时），需要兜底空数组；
+  // filterPackages 运行时只读 item.package，其入参类型比 IPublicTypePackage[] 窄，
+  // 这里按上游函数自己的入参类型传入，避免手写 any。
+  const packages = await filterPackages(
+    (material.getAssets()?.packages ?? []) as Parameters<typeof filterPackages>[0],
+  );
   window.localStorage.setItem(
     getLSName(scenarioName, 'packages'),
     JSON.stringify(packages),

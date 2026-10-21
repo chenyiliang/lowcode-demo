@@ -1,4 +1,18 @@
+// 必须第一行：把 window.AliLowCodeEngine 在任何插件模块求值前挂上
+// （components-pane 在模块顶层读它定 isNewEngineVersion；晚了会 editor.get 崩溃白屏）
+// 宿主页面全局：iframe 需要的 window.React/ReactDOM/PropTypes/Next/moment/_ 、
+// 引擎与主题样式。老配置里这些来自 index.ejs 的 CDN <script> + build.json externals。
+import './simulator-env';
+import './expose-engine-globals';
+import './styles';
+import { printBanner } from './banner';
 import { init, plugins } from '@alilc/lowcode-engine';
+// 画布 iframe 里的物料 UMD 读 window.parent.AliLowCodeEngine（实测 @alifd/layout 的
+// view.js 有 `var t = window.parent.AliLowCodeEngine; this.hotkey = t.hotkey`）。
+// 官方靠 UMD <script> 挂这个全局；我们改 ESM 打包后 engine 自身不挂，必须在此显式暴露，
+// 否则物料拿到 undefined → 'hotkey' TypeError → 画布空白。
+import * as AliLowCodeEngineNS from '@alilc/lowcode-engine';
+(window as any).AliLowCodeEngine = AliLowCodeEngineNS;
 import { createFetchHandler } from '@alilc/lowcode-datasource-fetch-handler'
 import EditorInitPlugin from './plugins/plugin-editor-init';
 import UndoRedoPlugin from '@alilc/lowcode-plugin-undo-redo';
@@ -15,7 +29,6 @@ import SaveSamplePlugin from './plugins/plugin-save-sample';
 import PreviewSamplePlugin from './plugins/plugin-preview-sample';
 import SetRefPropPlugin from '@alilc/lowcode-plugin-set-ref-prop';
 import LogoSamplePlugin from './plugins/plugin-logo-sample';
-import './global.scss';
 
 async function registerPlugins() {
   await plugins.register(EditorInitPlugin, {
@@ -76,6 +89,8 @@ async function registerPlugins() {
 };
 
 (async function main() {
+  printBanner();
+
   await registerPlugins();
 
   init(document.getElementById('lce-container')!, {
@@ -84,11 +99,10 @@ async function registerPlugins() {
     enableCanvasLock: true,
     // 默认绑定变量
     supportVariableGlobally: true,
-    // simulatorUrl 在当 engine-core.js 同一个父路径下时是不需要配置的！！！
-    // 这里因为用的是 alifd cdn，在不同 npm 包，engine-core.js 和 react-simulator-renderer.js 是不同路径
+    // 模拟器运行时不再指向 alifd CDN，改由本仓库自己打包（见 vite.config.simulator.ts）
     simulatorUrl: [
-      'https://alifd.alicdn.com/npm/@alilc/lowcode-react-simulator-renderer@1.1.1/dist/css/react-simulator-renderer.css',
-      'https://alifd.alicdn.com/npm/@alilc/lowcode-react-simulator-renderer@1.1.1/dist/js/react-simulator-renderer.js'
+      '/react-simulator-renderer.css',
+      '/react-simulator-renderer.js',
     ],
     requestHandlersMap: {
       fetch: createFetchHandler()

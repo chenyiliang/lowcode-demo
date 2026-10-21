@@ -64,5 +64,38 @@
         "targetPortId": "t"
       }
     }
+  ],
+  "componentsMap": [
+    {
+      "package": "@alilc/lce-x6-items",
+      "version": "1.0.7",
+      "exportName": "StartEnd",
+      "main": "src/index.tsx",
+      "destructuring": true,
+      "subName": "",
+      "componentName": "StartEnd"
+    },
+    {
+      "package": "@alilc/lce-x6-items",
+      "version": "1.0.7",
+      "exportName": "SendEmail",
+      "main": "src/index.tsx",
+      "destructuring": true,
+      "subName": "",
+      "componentName": "SendEmail"
+    },
+    {
+      "package": "@alilc/lce-x6-items",
+      "version": "1.0.7",
+      "exportName": "Line",
+      "main": "src/index.tsx",
+      "destructuring": true,
+      "subName": "",
+      "componentName": "Line"
+    },
+    {
+      "devMode": "lowCode",
+      "componentName": "Page"
+    }
   ]
 }

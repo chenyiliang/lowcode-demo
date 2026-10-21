@@ -15,7 +15,9 @@ const LocaleSelect: React.FC<IProps> = (props): React.ReactElement => {
     <div className="lowcode-plugin-simulator-locale-select">
         <Select
         id="select"
-        onChange={onChange}
+        // 单选场景，运行时 value 一定是 string；@alifd/next 的 onChange 形参类型较宽
+        // （DataSourceItem | DataSourceItem[]），这里在组件边界收窄回 string。
+        onChange={(value) => onChange(String(value))}
         defaultValue={currentLocaleValue}
         aria-label="切换画布区域 locale"
         style={{marginRight: 8}}
